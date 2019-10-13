@@ -2,7 +2,6 @@ package com.yuan.middleware.consumer.ack;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
-import com.yuan.middleware.consumer.ack.MyConsumer;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -14,7 +13,7 @@ import static com.yuan.middleware.util.RabbitMqConnection.getConnection;
  * @author yuan
  */
 @Slf4j
-public class Consumer {
+public class ConsumerA {
     public static void main(String[] args) throws IOException, TimeoutException {
         ReciveMsg();
     }
@@ -23,7 +22,7 @@ public class Consumer {
         Connection connection = getConnection();
         Channel channel = connection.createChannel();
 //        String exchangeName = "test_ack_exchange";
-        String queueName = "test_ack_queue";
+        String queueName = "test_ack_queue_a";
 //        String routingKey = "ack.#";
         // 声明队列
         /**

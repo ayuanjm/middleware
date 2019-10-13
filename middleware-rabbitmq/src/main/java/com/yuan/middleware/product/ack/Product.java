@@ -26,9 +26,21 @@ public class Product {
         Connection connection = getConnection();
         // 建立通道
         Channel channel = connection.createChannel();
-        String queueName = "test_ack_queue";
+        String queueNameA = "test_ack_queue_a";
+        String queueNameB = "test_ack_queue_b";
+
         String exchangeName = "test_ack_exchange";
-        channel.queueDeclare(queueName, true, false, false, null);
+        // 声明队列
+        /**
+         * @params 参数列表：
+         * String queue: 声明的队列名称
+         * boolean durable：消息是否持久化，若设置为true，则MQ重启后，队列仍然存在
+         * boolean exclusive：是否独占连接，设置为true,连接关闭则队列被删除，一般用于临时队列的创建，跟autoDelete配合使用
+         * boolean autoDelete：是否自动删除，设置为true,则队列不使用就自动删除，一般用于临时队列的创建
+         * Map<String, Object> arguments：设置队列的一些扩展参数
+         */
+        channel.queueDeclare(queueNameA, true, false, false, null);
+        channel.queueDeclare(queueNameB, true, false, false, null);
 
         // 声明交换机
         /**
@@ -47,7 +59,9 @@ public class Product {
          * String exchange,  交换机名称
          * String routingKey 路由key,路由模式下，我们指定这个key值
          */
-        channel.queueBind(queueName, exchangeName, routingKey);
+        channel.queueBind(queueNameA, exchangeName, routingKey);
+        channel.queueBind(queueNameB, exchangeName, "routingKey");
+
 
         for (int i = 0; i < 5; i++) {
             Map<String, Object> headers = new HashMap<>(16);
