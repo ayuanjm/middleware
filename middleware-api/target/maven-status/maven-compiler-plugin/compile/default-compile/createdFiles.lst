@@ -1,2 +1,3 @@
 com/yuan/middleware/util/RabbitMqConnection.class
+com/yuan/middleware/config/ConfigurationBean.class
 com/yuan/middleware/rabbitmq/config/RabbitMqConfig.class

@@ -1,2 +1,3 @@
 /Users/yuan/eclipse/middleware/middleware-api/src/main/java/com/yuan/middleware/rabbitmq/config/RabbitMqConfig.java
+/Users/yuan/eclipse/middleware/middleware-api/src/main/java/com/yuan/middleware/config/ConfigurationBean.java
 /Users/yuan/eclipse/middleware/middleware-api/src/main/java/com/yuan/middleware/util/RabbitMqConnection.java
