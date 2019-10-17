@@ -12,5 +12,4 @@ public class MiddlewareRabbitmqApplicationTests {
     @Test
     public void contextLoads() {
     }
-
 }

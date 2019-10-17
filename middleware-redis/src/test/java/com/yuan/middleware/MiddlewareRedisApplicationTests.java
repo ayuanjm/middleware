@@ -14,10 +14,11 @@ public class MiddlewareRedisApplicationTests {
     @Autowired
     private ApplicationContext ioc;
     @Autowired
-    private StringRedisTemplate template;
+    private StringRedisTemplate redisTemplate;
+
     @Test
     public void contextLoads() {
-        System.out.println(template.getDefaultSerializer());
+        System.out.println(redisTemplate.getDefaultSerializer());
     }
 
 }

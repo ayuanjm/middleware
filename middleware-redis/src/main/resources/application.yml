@@ -7,3 +7,9 @@ spring:
     host: localhost
     port: 6379
     password: 123456Aa
+logging:
+  #  pattern:
+  #    console: '%d -%msg%n'
+  path: /Users/yuan/idea/mnt/smf/${spring.application.name}/logs
+  level:
+    root: info

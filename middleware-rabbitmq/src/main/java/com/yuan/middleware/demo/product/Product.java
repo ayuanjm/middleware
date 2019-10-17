@@ -1,4 +1,4 @@
-package com.yuan.middleware.product.ack;
+package com.yuan.middleware.demo.product;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;

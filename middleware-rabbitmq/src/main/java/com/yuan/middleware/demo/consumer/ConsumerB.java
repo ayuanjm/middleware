@@ -1,8 +1,7 @@
-package com.yuan.middleware.consumer.ack;
+package com.yuan.middleware.demo.consumer;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
-import com.yuan.middleware.consumer.ack.MyConsumer;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;

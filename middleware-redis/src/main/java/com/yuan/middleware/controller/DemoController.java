@@ -12,18 +12,14 @@ import java.util.concurrent.TimeUnit;
  */
 @RestController
 public class DemoController {
-//    @Autowired
-//    private StringRedisTemplate template;
-//
-//    @GetMapping("/info")
-//    public StringRedisTemplate info() {
-//        return null;
-//    }
-//    @GetMapping("/put")
-//    public String redisSet() {
-//        int i = (int) (Math.random() * 100);
-//        stringRedisTemplate.opsForValue().set("key" + i, "value" + i, 300, TimeUnit.SECONDS);
-//        return "success " + "key" + i;
-//    }
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+    @GetMapping("/put")
+    public String redisSet() {
+        int i = (int) (Math.random() * 100);
+        redisTemplate.opsForValue().set("key" + i, "value" + i, 300, TimeUnit.SECONDS);
+        return "success " + "key" + i;
+    }
 
 }
