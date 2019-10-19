@@ -1,4 +1,4 @@
-package com.yuan.middleware.simple.product;
+package com.yuan.middleware.work.product;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -9,10 +9,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 /**
- * simple 队列是一一对应的，而我们实际开发中，生产者发送消息是毫不费力的，
- * 而消费者一般是要和业务相结合的，消费者接收到消息后就需要处理，可能需要花费时间，
- * 这时候队列就会积压很多消息
- *
+ * simple和work的区别在于，一对一和一对多 queue都是相同的
  * @author yuan
  * @date 2019-10-14 22:39
  * 生产者发送消息
