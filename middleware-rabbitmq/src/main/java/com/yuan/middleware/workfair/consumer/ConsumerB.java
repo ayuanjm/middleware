@@ -41,13 +41,18 @@ public class ConsumerB {
                 /**
                  * 如果注释这行，不给回执也会接收消息，接收的数量取决于channel.basicQos(1);中的参数
                  * 但是只是接收了消息不会消费掉，关闭这个消费者后，消息还在队列中存在，可以再次消费。
-                 * 只有给了回执消息才算是消费了。
+                 * 只有给了回执消息才算是消费了,rabbitmq才会删除内存中的消息
                  */
                 //手动回执
                 channel.basicAck(envelope.getDeliveryTag(), false);
             }
         };
-        //1 手工签收 autoAck = false,自动应答 autoAck = true
+
+        /**
+         * 手工签收 autoAck = false: channel.basicAck(envelope.getDeliveryTag(),false);
+         * 自动应答 autoAck = true: 一旦rabbitmq将消息分发给消费者就会从内存中删除,
+         * 这种情况下如果杀死正在执行的消费者，就会丢失正在处理的消息
+         */
         boolean autoAck = false;
         //监听队列
         channel.basicConsume(QUEUE_NAME, autoAck, defaultConsumer);
