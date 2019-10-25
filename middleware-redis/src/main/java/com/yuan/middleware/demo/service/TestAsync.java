@@ -1,4 +1,4 @@
-package com.yuan.middleware.service;
+package com.yuan.middleware.demo.service;
 
 /**
  * @author yuan

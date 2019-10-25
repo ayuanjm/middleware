@@ -1,32 +1,23 @@
-package com.yuan.middleware.controller;
+package com.yuan.middleware.demo.controller;
 
-import com.yuan.middleware.service.TestAsync;
+import com.yuan.middleware.demo.service.TestAsync;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * @author yuan
  */
 @Slf4j
 @RestController
-public class DemoController {
+public class AsyncController {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
     @Autowired
     private TestAsync testAsync;
-
-    @GetMapping("/put")
-    public String redisSet() {
-        int i = (int) (Math.random() * 100);
-        stringRedisTemplate.opsForValue().set("key" + i, "value" + i, 300, TimeUnit.SECONDS);
-        return "success " + "key" + i;
-    }
 
     @GetMapping("/async")
     public String async() {

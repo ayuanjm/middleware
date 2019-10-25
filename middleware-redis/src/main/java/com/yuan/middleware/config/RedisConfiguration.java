@@ -18,7 +18,8 @@ public class RedisConfiguration {
         log.info("自定义bean初始化");
         StringRedisTemplate redisTemplate = new StringRedisTemplate();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
-        redisTemplate.setEnableTransactionSupport(true);
+        //是否开启事物，true开启，false关闭
+        redisTemplate.setEnableTransactionSupport(false);
         log.info("开启redis事物");
         return redisTemplate;
     }

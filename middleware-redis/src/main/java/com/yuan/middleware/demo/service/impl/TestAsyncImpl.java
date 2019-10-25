@@ -1,6 +1,6 @@
-package com.yuan.middleware.service.impl;
+package com.yuan.middleware.demo.service.impl;
 
-import com.yuan.middleware.service.TestAsync;
+import com.yuan.middleware.demo.service.TestAsync;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
