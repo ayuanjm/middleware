@@ -67,4 +67,5 @@ public class ActivityController {
         map.put("msg", "操作成功！");
         return map;
     }
+
 }
