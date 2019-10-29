@@ -57,7 +57,7 @@ public class RedisController {
      * @return
      */
     @PostMapping(value = "/setKey")
-    public Object setKey(String key, String value, long time, String timeType) {
+    public Object setKey(String key, String value, @RequestParam long time, String timeType) {
         Map<String, Object> map = new HashMap<>(16);
         log.info("设置key入参:{key:" + key + ",value:" + value + ",time:" + time + ",timeType" + timeType + "}");
         redisTemplate.boundValueOps(key).set(value);
