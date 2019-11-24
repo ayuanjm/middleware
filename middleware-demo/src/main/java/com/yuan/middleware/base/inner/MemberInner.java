@@ -1,4 +1,4 @@
-package com.yuan.middleware.base.classload.inner;
+package com.yuan.middleware.base.inner;
 
 /**
  * 在Java中，可以将一个类定义在另一个类里面或者一个方法里面，这样的类称为内部类。

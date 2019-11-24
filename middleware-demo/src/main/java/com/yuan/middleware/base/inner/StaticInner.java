@@ -1,4 +1,4 @@
-package com.yuan.middleware.base.classload.inner;
+package com.yuan.middleware.base.inner;
 
 import lombok.Data;
 

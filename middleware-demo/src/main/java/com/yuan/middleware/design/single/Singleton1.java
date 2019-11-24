@@ -1,4 +1,4 @@
-package com.yuan.middleware.base.design.single;
+package com.yuan.middleware.design.single;
 
 import java.util.Date;
 
