@@ -1,0 +1,200 @@
+//HashMap初始化或者双倍扩容内部数组，首先解析初始化过程
+final Node<K,V>[] resize() {
+    //暂存当前内部数组的引用，初始化时 table=null
+    Node<K,V>[] oldTab = table;
+    //oldCap = 0
+    int oldCap = (oldTab == null) ? 0 : oldTab.length;
+    // Map<String,Object> map = new HashMap(5); threshold = 8,oldThr = 8;threshold:阈值,oldThr:旧阈值
+    int oldThr = threshold;
+    // 赋值初始值0 ，newCap:新数组长度，newThr:新阈值
+    int newCap, newThr = 0;
+    //如果内部数组length>0进行2倍扩容操作，由于是初始化阶段oldCap = 0,不做分析。
+    if (oldCap > 0) {
+        if (oldCap >= MAXIMUM_CAPACITY) {
+            threshold = Integer.MAX_VALUE;
+            return oldTab;
+        }
+        else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY &&
+                 oldCap >= DEFAULT_INITIAL_CAPACITY)
+            newThr = oldThr << 1; // double threshold
+    }
+    else if (oldThr > 0) // initial capacity was placed in threshold
+        //newCap = oldThr = 8,新数组长度等于旧阈值=8
+        newCap = oldThr;
+    else {               // zero initial threshold signifies using defaults
+        // 新数组长度等于默认长度16
+        newCap = DEFAULT_INITIAL_CAPACITY;
+        // 新阈值 = 默认长度*默认负载因子 = 16 * 0.75 = 12
+        newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
+    }
+    //新的阈值newThr == 0 初始化时为true
+    if (newThr == 0) {
+        // (ft = 8 * 0.75) == 6,新数组长度 * 加载因子 = 新阈值
+        float ft = (float)newCap * loadFactor;
+        newThr = (newCap < MAXIMUM_CAPACITY && ft < (float)MAXIMUM_CAPACITY ?
+                  (int)ft : Integer.MAX_VALUE);
+    }
+    //将阈值赋值为新阈值newThr=6
+    threshold = newThr;
+    //初始化内部数组长度等于newCap=8
+    Node<K,V>[] newTab = (Node<K,V>[])new Node[newCap];
+    //将原来的内部数组引用指向初始化后的数组
+    table = newTab;
+    //初始化时oldTab指向最初始的内部数组 = null，初始化内部数组结束。
+    if (oldTab != null) {
+        for (int j = 0; j < oldCap; ++j) {
+            Node<K,V> e;
+            if ((e = oldTab[j]) != null) {
+                oldTab[j] = null;
+                if (e.next == null)
+                    newTab[e.hash & (newCap - 1)] = e;
+                else if (e instanceof TreeNode)
+                    ((TreeNode<K,V>)e).split(this, newTab, j, oldCap);
+                else { // preserve order
+                    Node<K,V> loHead = null, loTail = null;
+                    Node<K,V> hiHead = null, hiTail = null;
+                    Node<K,V> next;
+                    do {
+                        next = e.next;
+                        if ((e.hash & oldCap) == 0) {
+                            if (loTail == null)
+                                loHead = e;
+                            else
+                                loTail.next = e;
+                            loTail = e;
+                        }
+                        else {
+                            if (hiTail == null)
+                                hiHead = e;
+                            else
+                                hiTail.next = e;
+                            hiTail = e;
+                        }
+                    } while ((e = next) != null);
+                    if (loTail != null) {
+                        loTail.next = null;
+                        newTab[j] = loHead;
+                    }
+                    if (hiTail != null) {
+                        hiTail.next = null;
+                        newTab[j + oldCap] = hiHead;
+                    }
+                }
+            }
+        }
+    }
+    return newTab;
+}
+
+//Map<String,Object> map = new HashMap(5); cap = 5,返回 threshold = 8
+static final int tableSizeFor(int cap) {
+    int n = cap - 1;
+    n |= n >>> 1;
+    n |= n >>> 2;
+    n |= n >>> 4;
+    n |= n >>> 8;
+    n |= n >>> 16;
+    return (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
+}
+
+//内部数组扩容
+final Node<K,V>[] resize() {
+        //暂存当前内部数组的引用 table.length=6
+        Node<K,V>[] oldTab = table;
+        //旧的内部数组长度oldCap = 8
+        int oldCap = (oldTab == null) ? 0 : oldTab.length;
+        //oldThr = 6 阈值threshold = 6
+        int oldThr = threshold;
+        // 赋值初始值0
+        int newCap, newThr = 0;
+        // 扩容时旧的内部数组长度oldCap > 0
+        if (oldCap > 0) {
+            // 如果扩容前的内部数组长度达到最大容量2的30次方
+            if (oldCap >= MAXIMUM_CAPACITY) {
+                // 将阈值设置为整数最大值
+                threshold = Integer.MAX_VALUE;
+                // 结束扩容
+                return oldTab;
+            }
+            // 将内部数组扩容2倍并且需要小于最大容量，原来的数组容量需要大于默认容量16，由于现在oldCap = 8条件不成立。newCap = 16
+            else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY &&
+                     oldCap >= DEFAULT_INITIAL_CAPACITY)
+                newThr = oldThr << 1; // double threshold
+        }
+        else if (oldThr > 0) // initial capacity was placed in threshold
+            newCap = oldThr;
+        else {               // zero initial threshold signifies using defaults
+            newCap = DEFAULT_INITIAL_CAPACITY;
+            newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
+        }
+        // newThr == 0成立
+        if (newThr == 0) {
+            // (ft = 16 * 0.75) == 12
+            float ft = (float)newCap * loadFactor;
+            //16和12小于最大容量，newThr = 12
+            newThr = (newCap < MAXIMUM_CAPACITY && ft < (float)MAXIMUM_CAPACITY ?
+                      (int)ft : Integer.MAX_VALUE);
+        }
+        // 阈值 = 12
+        threshold = newThr;
+        // 扩容后的数组容量为newCap = 16
+        Node<K,V>[] newTab = (Node<K,V>[])new Node[newCap];
+        // 将原来的内部数组引用指向初始化后的数组
+        table = newTab;
+        // 扩容前的旧数组不为空
+        if (oldTab != null) {
+            //循环旧数组重新映射
+            for (int j = 0; j < oldCap; ++j) {
+                // 当前节点
+                Node<K,V> e;
+                // 旧数组的第一个元素不为空，指的是数组第一个位置有保存key值，将当前节点指向旧节点
+                if ((e = oldTab[j]) != null) {
+                    // 将旧节点赋值为null
+                    oldTab[j] = null;
+                    // 由于数组的每个元素，都是单链表的头节点（jdk7之前）,判断链表是否还有节点
+                    if (e.next == null)
+                        // e.next == null 该位置只有一个节点，将该节点根据hash映射规则重新映射到扩容后的数组对应的位置。
+                        // 映射规则: 数组下标位置(index) = e.hash & (newCap - 1) ,k的hash值 位与(&) 扩容后的数组长度-1(newCap - 1)
+                        // 数组扩容后由于长度改变，映射也改变了，会导致节点位置变化。
+                        newTab[e.hash & (newCap - 1)] = e;
+                        //e.next ！= null 时需要判断是链表还是树
+                    else if (e instanceof TreeNode)
+                        ((TreeNode<K,V>)e).split(this, newTab, j, oldCap);
+                    else {
+                        // preserve order，是链表时
+                        Node<K,V> loHead = null, loTail = null;
+                        Node<K,V> hiHead = null, hiTail = null;
+                        Node<K,V> next;
+                        do {
+                            // 记录当前节点的下一个节点
+                            next = e.next;
+                            //
+                            if ((e.hash & oldCap) == 0) {
+                                if (loTail == null)
+                                    loHead = e;
+                                else
+                                    loTail.next = e;
+                                loTail = e;
+                            }
+                            else {
+                                if (hiTail == null)
+                                    hiHead = e;
+                                else
+                                    hiTail.next = e;
+                                hiTail = e;
+                            }
+                        } while ((e = next) != null);
+                        if (loTail != null) {
+                            loTail.next = null;
+                            newTab[j] = loHead;
+                        }
+                        if (hiTail != null) {
+                            hiTail.next = null;
+                            newTab[j + oldCap] = hiHead;
+                        }
+                    }
+                }
+            }
+        }
+        return newTab;
+    }
