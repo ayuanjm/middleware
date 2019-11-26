@@ -351,6 +351,11 @@ public class ArrayList<E> implements List<E> {
     /**
      * 向量 迭代器内部类
      * 循环时必须先调用next方法才能调用一次remove方法
+     * 需要注意是通过下标找到元素还是通过指针(引用)找到元素
+     * 下标：在进行迭代remove时需要返还下标值(一般是减1)，
+     * 指针：在进行迭代remove时由于删除是改变引用指向因此不需要做修改，还是指向下一个节点
+     * Iterator基本都有两个下标或两个节点，lastRet代表当前返回，current代表下一个元素。
+     * next方法总是执行 lastRet = current,current = current.next或(current++)
      */
     private class ListItr implements Iterator<E> {
         /**
