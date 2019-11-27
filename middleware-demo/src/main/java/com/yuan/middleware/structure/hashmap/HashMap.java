@@ -1,10 +1,6 @@
 package com.yuan.middleware.structure.hashmap;
 
-import org.springframework.util.CollectionUtils;
-
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * 哈希表存储的是key-value键值对结构的数据，其基础是一个数组。
@@ -108,7 +104,7 @@ public class HashMap<K, V> implements Map<K, V> {
             int hashCode = key.hashCode();
             //:::通过 高位和低位的异或运算，获得最终的hash映射，减少碰撞的几率
             int finalHashCode = hashCode ^ (hashCode >>> 16);
-            //jdk的hashMap: newTab[e.hash & (newCap - 1)] = e;  jdk数组扩容翻倍:newCap = oldCap << 1; // double threshold
+            //jdk的hashMap: newTab[e.hash & (newCap - 1)] = e;  jdk数组扩容翻倍:newCap = oldCap << 1;   阈值 = 数组长度 * 负载因子;数组总是扩容2倍
             return (elements.length - 1) & finalHashCode;
         }
     }
@@ -186,8 +182,8 @@ public class HashMap<K, V> implements Map<K, V> {
         if (firstEntryNode == null) {
             return null;
         }
+        //第一个节点的key是否等于key
         if (firstEntryNode.keyIsEquals(key)) {
-            //第一个节点的key是否等于key
             if (firstEntryNode.next == null) {
                 //第一个节点就是key并且该链表只有一个节点，直接将该位置的数组元素=null
                 this.elements[index] = null;
@@ -448,64 +444,141 @@ public class HashMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public Iterator<Map.EntryNode<K, V>> iterator() {
-        return null;
+    public Iterator<EntryNode<K, V>> iterator() {
+        return new Itr();
+    }
+
+    @Override
+    public String toString() {
+        Iterator<EntryNode<K, V>> iterator = this.iterator();
+
+        //:::空容器
+        if (!iterator.hasNext()) {
+            return "[]";
+        }
+
+        //:::容器起始使用"["
+        StringBuilder s = new StringBuilder("[");
+
+        //:::反复迭代
+        while (true) {
+            //:::获得迭代的当前元素
+            EntryNode<K, V> data = iterator.next();
+
+            //:::判断当前元素是否是最后一个元素
+            if (!iterator.hasNext()) {
+                //:::是最后一个元素，用"]"收尾
+                s.append(data).append("]");
+                //:::返回 拼接完毕的字符串
+                return s.toString();
+            } else {
+                //:::不是最后一个元素
+                //:::使用", "分割，拼接到后面
+                s.append(data).append(", ");
+            }
+        }
     }
 
     /**
-     * 键值对节点 内部类
+     * 哈希表 迭代器实现
      */
-    class EntryNode<K, V> implements Map.EntryNode<K, V> {
-        final K key;
-        V value;
-        EntryNode<K, V> next;
+    private class Itr implements Iterator<EntryNode<K, V>> {
+        /**
+         * 迭代器 当前节点
+         */
+        private EntryNode<K, V> currentNode;
 
-        EntryNode(K key, V value) {
-            this.key = key;
-            this.value = value;
-        }
+        /**
+         * 迭代器 下一个节点
+         */
+        private EntryNode<K, V> nextNode;
 
-        boolean keyIsEquals(K key) {
-            if (this.key == key) {
-                return true;
+        /**
+         * 迭代器 当前内部数组的下标
+         */
+        private int currentIndex;
+
+        /**
+         * 默认构造方法
+         */
+        private Itr() {
+            //:::如果当前哈希表为空，直接返回
+            if (HashMap.this.isEmpty()) {
+                return;
             }
+            //:::在构造方法中，将迭代器下标移动到第一个有效的节点上
 
-            if (key == null) {
-                //:::如果走到这步，this.key不等于null，不匹配
-                return false;
-            } else {
-                return key.equals(this.key);
+            //:::遍历内部数组，找到第一个不为空的数组插槽slot
+            for (int i = 0; i < HashMap.this.elements.length; i++) {
+                //:::设置当前index
+                this.currentIndex = i;
+
+                EntryNode<K, V> firstEntryNode = HashMap.this.elements[i];
+                //:::找到了第一个不为空的插槽slot
+                if (firstEntryNode != null) {
+                    //:::nextNode = 当前插槽第一个节点
+                    this.nextNode = firstEntryNode;
+
+                    //:::构造方法立即结束
+                    return;
+                }
             }
         }
 
-        EntryNode<K, V> getNext() {
-            return next;
-        }
 
-        void setNext(EntryNode<K, V> next) {
-            this.next = next;
-        }
-
-        public K getKey() {
-            return key;
-        }
-
-        public V getValue() {
-            return value;
-        }
-
-        public void setValue(V value) {
-            this.value = value;
+        @Override
+        public boolean hasNext() {
+            return this.nextNode != null;
         }
 
         @Override
-        public String toString() {
-            return key + "=" + value;
+        public EntryNode<K, V> next() {
+            //将下一个节点赋值给当前节点
+            currentNode = nextNode;
+            //下一个节点指向自己的下一个节点
+            nextNode = nextNode.next;
+            //如果下一个节点为null说明当前内部数组下标的元素遍历完，需要再次遍历内部数组查找下一个节点
+            if (nextNode == null) {
+                //当前下标自增
+                currentIndex++;
+                for (; currentIndex < HashMap.this.elements.length; currentIndex++) {
+                    EntryNode<K, V> firstEntryNode = HashMap.this.elements[currentIndex];
+                    //:::找到了第一个不为空的插槽slot
+                    if (firstEntryNode != null) {
+                        this.nextNode = firstEntryNode;
+                        break;
+                    }
+                }
+            }
+            return currentNode;
+        }
+
+
+        @Override
+        public void remove() {
+            if (this.currentNode == null) {
+                throw new RuntimeException("迭代器状态异常: 可能在一次迭代中进行了多次remove操作");
+            }
+            //将其从哈希表中移除
+            HashMap.this.remove(currentNode.key);
+            //currentNode设置为null，防止反复调用remove方法
+            this.currentNode = null;
         }
     }
 
     public static void main(String[] args) {
-        List list = new ArrayList();
-        System.out.println(CollectionUtils.isEmpty(list));
+        System.out.println();
+        java.util.Map<Object, Object> map = new java.util.HashMap(3);
+        int i = 0;
+        for (; i < 10; ++i) {
+            System.out.println(i);
+            if (i == 3) {
+                break;
+            }
+            map.put(i, i);
+        }
+        System.out.println(i);
+//        for (map.values())
+
     }
 }

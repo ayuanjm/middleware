@@ -398,10 +398,10 @@ public class LinkedList<E> implements List<E> {
      */
     private class Itr implements Iterator<E> {
         /**
-         * 当前迭代器光标位置
+         * 迭代器 下一个节点
          * 初始化指向 第一个节点(不是首部节点)
          */
-        private Node<E> currentNode = LinkedList.this.first.right;
+        private Node<E> nextNode = LinkedList.this.first.right;
         /**
          * 最近一次迭代返回的数据
          */
@@ -409,17 +409,17 @@ public class LinkedList<E> implements List<E> {
 
         @Override
         public boolean hasNext() {
-            //判断当前节点的下一个节点 是否是 尾部哨兵节点
-            return currentNode != LinkedList.this.last;
+            //判断下一个节点 是否是 尾部哨兵节点
+            return nextNode != LinkedList.this.last;
         }
 
         @Override
         public E next() {
             //设置最近一次返回的节点
-            this.lastReturned = currentNode;
+            this.lastReturned = nextNode;
 
-            //指向当前节点的下一个节点
-            this.currentNode = this.currentNode.right;
+            //指向下一个节点
+            this.nextNode = this.nextNode.right;
 
             //返回当前节点的data
             return this.lastReturned.data;
