@@ -3,7 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/middleware-api" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/middleware-rabbitmq" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/middleware-demo" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/middleware-rabbitmq" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/middleware-redis" charset="UTF-8" />
   </component>
