@@ -1,0 +1,8 @@
+/middleware/.idea/
+/middleware/.mvn/
+/middleware-demo/target/
+/middleware-demo/.mvn/
+/middleware-rabbitmq/target/
+/middleware-rabbitmq/.mvn/
+/middleware-redis/target/
+/middleware-rabbitmq/.mvn/
