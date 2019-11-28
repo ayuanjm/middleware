@@ -48,6 +48,7 @@ public class TreeMap<K, V> implements Map<K, V> {
      * 返回null代表 目标节点不存在
      */
     private TargetEntryNode<K, V> getTargetEntryNode(K key) {
+        //比较结果
         int compareResult = 0;
         EntryNode<K, V> parent = null;
         EntryNode<K, V> parentTemp = null;
@@ -100,16 +101,17 @@ public class TreeMap<K, V> implements Map<K, V> {
 
     /**
      * 判断双亲节点和目标节点 相对位置
-     * @param parent    双亲节点
-     * @param target    目标节点
-     * @return          相对位置(左孩子/右孩子)
+     *
+     * @param parent 双亲节点
+     * @param target 目标节点
+     * @return 相对位置(左孩子 / 右孩子)
      */
-    private RelativePosition getRelativeByParent(EntryNode<K,V> parent,EntryNode<K,V> target){
-        if(parent.left == target){
+    private RelativePosition getRelativeByParent(EntryNode<K, V> parent, EntryNode<K, V> target) {
+        if (parent.left == target) {
             return RelativePosition.LEFT;
-        }else if(parent.right == target){
+        } else if (parent.right == target) {
             return RelativePosition.RIGHT;
-        }else{
+        } else {
             throw new RuntimeException("不是父子节点关系");
         }
     }
