@@ -1,6 +1,7 @@
 /middleware/.idea/
 /middleware/.mvn/
 /middleware-demo/.mvn/
+/middleware-demo/target/
 /middleware-rabbitmq/target/
 /middleware-rabbitmq/.mvn/
 /middleware-redis/target/
