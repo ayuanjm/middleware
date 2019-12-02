@@ -28,7 +28,7 @@ public class RequestHandleTimeInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
         log.info("METHOD={}, HANDLE_TIME={}ms", request.getRequestURI(), System.currentTimeMillis() - CONSUME_TIME.get());
-        //Controller执行完移除本地线程变量中存储的该线程释放空间
+        //Controller执行完移除该线程的属性threadLocals 存储的key为CONSUME_TIME的值 释放空间
         CONSUME_TIME.remove();
     }
 

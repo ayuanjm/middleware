@@ -29,7 +29,7 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
                  * addViewControllers可以方便的实现一个请求直接映射成视图，而无需书写controller
                  * registry.addViewController("请求路径").setViewName("请求页面文件路径")
                  */
-                registry.addViewController("/").setViewName("index");
+                registry.addViewController("/").setViewName("upload");
             }
 
             //注册拦截器：相当于<mvc:interceptors>

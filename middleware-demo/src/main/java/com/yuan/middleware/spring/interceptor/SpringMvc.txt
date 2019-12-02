@@ -1,0 +1,84 @@
+用户发送请求先经过FilterChain，执行doFilter，再经过DispatcherServlet，执行doService，执行doDispatch:
+
+执行mappedHandler = getHandler(processedRequest)找到具体的处理器
+protected HandlerExecutionChain getHandler(HttpServletRequest request) throws Exception {
+    if (this.handlerMappings != null) {
+        for (HandlerMapping mapping : this.handlerMappings) {
+            //一般url请求都是通过AbstractUrlHandlerMapping找到具体的处理器
+            HandlerExecutionChain handler = mapping.getHandler(request);
+            if (handler != null) {
+                //handler中包含了interceptorList 拦截器链
+                return handler;
+            }
+        }
+    }
+    return null;
+}
+//为该请求添加符合条件的拦截器
+HandlerExecutionChain executionChain = getHandlerExecutionChain(handler, request);
+protected HandlerExecutionChain getHandlerExecutionChain(Object handler, HttpServletRequest request) {
+    HandlerExecutionChain chain = (handler instanceof HandlerExecutionChain ?
+            (HandlerExecutionChain) handler : new HandlerExecutionChain(handler));
+
+    String lookupPath = this.urlPathHelper.getLookupPathForRequest(request);
+    for (HandlerInterceptor interceptor : this.adaptedInterceptors) {
+        if (interceptor instanceof MappedInterceptor) {
+            MappedInterceptor mappedInterceptor = (MappedInterceptor) interceptor;
+            if (mappedInterceptor.matches(lookupPath, this.pathMatcher)) {
+                chain.addInterceptor(mappedInterceptor.getInterceptor());
+            }
+        }
+        else {
+            chain.addInterceptor(interceptor);
+        }
+    }
+    return chain;
+}
+
+//确定当前请求的处理程序适配器
+HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
+protected HandlerAdapter getHandlerAdapter(Object handler) throws ServletException {
+    if (this.handlerAdapters != null) {
+        for (HandlerAdapter adapter : this.handlerAdapters) {
+            if (adapter.supports(handler)) {
+                //一般是SimpleControllerHandlerAdapter适配器
+                return adapter;
+            }
+        }
+    }
+}
+//执行拦截器链
+if (!mappedHandler.applyPreHandle(processedRequest, response))
+boolean applyPreHandle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    HandlerInterceptor[] interceptors = getInterceptors();
+    if (!ObjectUtils.isEmpty(interceptors)) {
+        for (int i = 0; i < interceptors.length; i++) {
+            HandlerInterceptor interceptor = interceptors[i];
+            //执行拦截器的preHandle方法如果为true
+            if (!interceptor.preHandle(request, response, this.handler)) {
+                triggerAfterCompletion(request, response, null);
+                return false;
+            }
+            this.interceptorIndex = i;
+        }
+    }
+    return true;
+}
+//处理程序适配器执行Controller返回ModelAndView
+mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
+
+用户发送请求至前端控制器DispatcherServlet。
+DispatcherServlet收到请求调用HandlerMapping处理器映射器。
+处理器映射器找到具体的处理器(可以根据xml配置、注解进行查找)，生成处理器对象及处理器拦截器(如果有则生成)一并返回给DispatcherServlet。
+DispatcherServlet调用HandlerAdapter处理器适配器。
+HandlerAdapter经过适配调用具体的处理器(Controller，也叫后端控制器)。
+Controller执行完成返回ModelAndView。
+HandlerAdapter将controller执行结果ModelAndView返回给DispatcherServlet。
+DispatcherServlet将ModelAndView传给ViewReslover视图解析器。
+ViewReslover解析后返回具体View。
+DispatcherServlet根据View进行渲染视图（即将模型数据填充至视图中）。
+DispatcherServlet响应用户。
+
+
+
+
