@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
-    <!--全局变量-->
+    <!--全局变量 web项目的初始化参数-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:applicationContext*.xml</param-value>
@@ -32,7 +32,16 @@
     <servlet>
         <servlet-name>MyServlet</servlet-name>
         <servlet-class>com.yuan.spring.config.MyServlet</servlet-class>
+        <init-param>
+            <param-name>userName</param-name>
+            <param-value>yuan</param-value>
+        </init-param>
     </servlet>
+    <!--http://localhost:8080/index
+        url:资源定位符
+        静态资源:实际的文件 .html .css .png
+        动态资源:我们请求的动态资源是启用一段程序来处理（Servlet service方法 处理动态资源）
+    -->
     <servlet-mapping>
         <servlet-name>MyServlet</servlet-name>
         <url-pattern>/index</url-pattern>
