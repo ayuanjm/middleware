@@ -39,4 +39,9 @@ public class DeptServiceImpl implements DeptService {
         return dao.findAll();
     }
 
+    @Override
+    public Dept updateDept(Dept dept) {
+        System.out.println(dept);
+        return dao.updateDept(dept);
+    }
 }

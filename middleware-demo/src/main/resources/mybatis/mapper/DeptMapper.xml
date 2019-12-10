@@ -14,6 +14,19 @@
 		INSERT INTO dept(dname,db_source) VALUES(#{dname},DATABASE());
 	</insert>
 
+	<update id="updateDept">
+		update dept
+		<set>
+			<if test="dname != null">
+				danme = #{dname},
+			</if>
+			<if test="dbSource != null">
+				db_source = #{dbSource},
+			</if>
+		</set>
+		where deptno = #{deptno}
+	</update>
+
 </mapper>
  
 

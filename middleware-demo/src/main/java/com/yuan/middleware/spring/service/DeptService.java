@@ -6,9 +6,17 @@ import com.yuan.middleware.spring.entity.Dept;
 import java.util.List;
 
 public interface DeptService {
-    public boolean add(Dept dept);
+    boolean add(Dept dept);
 
-    public Dept get(Long id);
+    Dept get(Long id);
 
-    public List<Dept> list();
+    List<Dept> list();
+
+    /**
+     * 测试mybatis<if test="dname != null">
+     * @param dept
+     * @return
+     */
+    Dept updateDept(Dept dept);
+
 }

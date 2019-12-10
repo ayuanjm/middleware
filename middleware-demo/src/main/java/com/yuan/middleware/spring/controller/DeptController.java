@@ -32,4 +32,9 @@ public class DeptController {
     public List<Dept> list() {
         return service.list();
     }
+
+    @RequestMapping("/updateDept")
+    public Dept test(Dept dept) {
+        return service.updateDept(dept);
+    }
 }

@@ -1,0 +1,53 @@
+线程池工作原理  JUC
+    1. 池化技术 (高效)
+    2. 提前保存大量的资源，以备不时之需！
+    3. start---use---close    占用资源
+    4. pool----取----放回去!  给一些初始化的大小！  10
+            特殊情况： 并发  20~30，扩容！机制，（队列，可扩展的）
+
+为什么要使用线程池：
+    1. 单核CPU，假的多线程，小丑===球
+    2. 多核CPU，多个线程泡在自己独立的CPU上，不用切换，提高效率
+
+
+new ThreadPoolExecutor(1, 1,
+                        0L, TimeUnit.MILLISECONDS,
+                        new LinkedBlockingQueue<Runnable>()));
+
+return new ThreadPoolExecutor(nThreads, nThreads,
+                              0L, TimeUnit.MILLISECONDS,
+                              new LinkedBlockingQueue<Runnable>());
+
+return new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+                              60L, TimeUnit.SECONDS,
+                              new SynchronousQueue<Runnable>());
+
+
+//7大参数
+public ThreadPoolExecutor(int corePoolSize, ==> 核心池子的大小
+                          int maximumPoolSize, ==> 最大大小！
+                          long keepAliveTime,  ==> 连接时间！
+                          TimeUnit unit, ==> 时间单位！
+
+                          BlockingQueue<Runnable> workQueue, ===> 阻塞队列
+                          ThreadFactory threadFactory, ===> 创建线程！
+                          RejectedExecutionHandler handler ===>拒绝策略
+
+                          ) {
+    if (corePoolSize < 0 ||
+        maximumPoolSize <= 0 ||
+        maximumPoolSize < corePoolSize ||
+        keepAliveTime < 0)
+        throw new IllegalArgumentException();
+    if (workQueue == null || threadFactory == null || handler == null)
+        throw new NullPointerException();
+    this.acc = System.getSecurityManager() == null ?
+            null :
+            AccessController.getContext();
+    this.corePoolSize = corePoolSize;
+    this.maximumPoolSize = maximumPoolSize;
+    this.workQueue = workQueue;
+    this.keepAliveTime = unit.toNanos(keepAliveTime);
+    this.threadFactory = threadFactory;
+    this.handler = handler;
+}

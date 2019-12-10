@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RunWith(SpringRunner.class)
@@ -17,6 +21,10 @@ public class MiddlewareDemoApplicationTests {
     @Test
     public void contextLoads() {
         System.out.println(ioc.getBean("beanScope"));
+    }
+
+    public static void main(String[] args) {
+
     }
 
 }
