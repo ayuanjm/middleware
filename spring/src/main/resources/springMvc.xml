@@ -12,9 +12,9 @@
 
     <!-- 1.开启SpringMVC注解驱动 -->
     <mvc:annotation-driven/>
-    <!-- 2.静态资源默认servlet配置-->
+    <!-- 2.静态资源默认servlet配置 使DispatcherServlet / 不会拦截静态资源请求 可以直接访问静态资源
+    http://localhost:8080/spring/index.jsp  -->
     <mvc:default-servlet-handler/>
-
     <!-- 3.配置jsp 显示ViewResolver视图解析器 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>

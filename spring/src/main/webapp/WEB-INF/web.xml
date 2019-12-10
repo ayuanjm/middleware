@@ -46,7 +46,29 @@
         <servlet-name>MyServlet</servlet-name>
         <url-pattern>/index</url-pattern>
     </servlet-mapping>
+    <!--HttpServlet-->
+    <servlet>
+        <servlet-name>MyHttpServlet</servlet-name>
+        <servlet-class>com.yuan.spring.config.MyHttpServlet</servlet-class>
+        <init-param>
+            <param-name>hobby</param-name>
+            <param-value>networkGames</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MyHttpServlet</servlet-name>
+        <url-pattern>/myHttpServlet</url-pattern>
+    </servlet-mapping>
 
+    <!--ChangeHttpServlet 测试转发和重定向-->
+    <servlet>
+        <servlet-name>ChangeHttpServlet</servlet-name>
+        <servlet-class>com.yuan.spring.config.ChangeHttpServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ChangeHttpServlet</servlet-name>
+        <url-pattern>/changeHttpServlet</url-pattern>
+    </servlet-mapping>
     <!--encodingFilter-->
     <filter>
         <filter-name>encodingFilter</filter-name>
