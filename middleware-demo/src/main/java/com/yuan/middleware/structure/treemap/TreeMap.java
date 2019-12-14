@@ -51,7 +51,6 @@ public class TreeMap<K, V> implements Map<K, V> {
         //比较结果
         int compareResult = 0;
         EntryNode<K, V> parent = null;
-        EntryNode<K, V> parentTemp = null;
         EntryNode<K, V> currentNode = this.root;
         //当currentNode不为null时
         while (currentNode != null) {
@@ -66,18 +65,17 @@ public class TreeMap<K, V> implements Map<K, V> {
                 currentNode = parent.left;
             } else {
                 //当前key等于currentNode的key 指向currentNode,当currentNode=root时表示当前节点为根节点父节点为null
-                return new TargetEntryNode<>(currentNode, parentTemp, RelativePosition.CURRENT);
+                return new TargetEntryNode<>(currentNode, parent, RelativePosition.CURRENT);
             }
-            parentTemp = parent;
         }
 
         //没有找到目标节点
         if (compareResult > 0) {
             //:::返回 右孩子 哨兵节点
-            return new TargetEntryNode<>(null, parent, RelativePosition.LEFT);
+            return new TargetEntryNode<>(null, parent, RelativePosition.RIGHT);
         } else if (compareResult < 0) {
             //:::返回 左孩子 哨兵节点
-            return new TargetEntryNode<>(null, parent, RelativePosition.RIGHT);
+            return new TargetEntryNode<>(null, parent, RelativePosition.LEFT);
         } else {
             //说明map.size=0但是调用这个方法之前已经做了非0判断
             throw new RuntimeException("状态异常");
@@ -116,10 +114,128 @@ public class TreeMap<K, V> implements Map<K, V> {
         }
     }
 
+    /**
+     * 获得当前节点的后继节点
+     * 后继节点value值大于该节点value值并且值最小的节点
+     *
+     * @param targetEntryNode 当前节点
+     * @return 获得当前节点的后继节点
+     */
+    private EntryNode<K, V> getSuccessor(EntryNode<K, V> targetEntryNode) {
+        if (targetEntryNode == null) {
+            //当前节点为null，则后继也为null
+            return null;
+        }
+        if (targetEntryNode.right != null) {
+            //右节点不为null
+            EntryNode<K, V> rightEntryNode = targetEntryNode.right;
+            //取右节点的左节点->左节点 = 最左节点
+            while (rightEntryNode.left != null) {
+                rightEntryNode = rightEntryNode.left;
+            }
+            return rightEntryNode;
+        } else {
+            EntryNode<K, V> child = targetEntryNode;
+            EntryNode<K, V> parent = targetEntryNode.parent;
+            //大于当前节点的必然是当前节点的右节点 或者 当前节点是父节点的左节点，因此取第一个把当前节点视为左节点的父节点。
+            while (parent != null && parent.left != child) {
+                child = parent;
+                parent = parent.parent;
+            }
+            return parent;
+        }
+    }
+
+    /**
+     * 获取当前节点的前驱节点
+     * 前驱节点value值小于该节点value值并且值最大的节点
+     *
+     * @param targetEntryNode 当前节点
+     * @return
+     */
+    private EntryNode<K, V> getPrecursor(EntryNode<K, V> targetEntryNode) {
+        //当前节点为null返回null
+        if (targetEntryNode == null) {
+            return null;
+        }
+        if (targetEntryNode.left != null) {
+            //当前节点的左节点不为null
+            EntryNode<K, V> leftEntryNode = targetEntryNode.left;
+            //取左节点的最右节点，左节点比当前节点小，左节点的右节点比左节点大，取左节点的最右节点，比当前节点小，但是是最大值
+            while (leftEntryNode.right != null) {
+                leftEntryNode = leftEntryNode.right;
+            }
+            return leftEntryNode;
+        } else {
+            EntryNode<K, V> child = targetEntryNode;
+            EntryNode<K, V> parent = targetEntryNode.parent;
+            //小于当前节点的必然是当前节点的左节点 或者 当前节点是父节点的右节点，因此取第一个把当前节点视为右节点的父节点。
+            while (parent != null && parent.right != child) {
+                child = parent;
+                parent = parent.parent;
+            }
+            return parent;
+        }
+    }
+
+    /**
+     * 获得二叉搜索树的第一个节点
+     *
+     * @return
+     */
+    private EntryNode<K, V> getFirstNode() {
+        if (this.root == null) {
+            return null;
+        }
+        EntryNode<K, V> entryNode = this.root;
+        //循环往复，寻找整棵树的最左节点(最小节点、第一个节点)
+        while (entryNode.left != null) {
+            entryNode = entryNode.left;
+        }
+        return entryNode;
+    }
+
+    public static void main(String[] args) {
+        java.util.TreeMap m = new java.util.TreeMap(new java.util.Comparator() {
+            @Override
+            public int compare(Object o1, Object o2) {
+                return 0;
+            }
+        });
+        TreeMap map = new TreeMap();
+    }
 
     @Override
     public V put(K key, V value) {
-        return null;
+        if (this.size == 0) {
+            this.root = new EntryNode<>(key, value);
+            this.size++;
+            return null;
+        }
+        //获得key对应的目标节点
+        TargetEntryNode<K, V> targetEntryNode = getTargetEntryNode(key);
+        //目标节点对应父节点
+        EntryNode<K, V> parent = targetEntryNode.parent;
+        //key存在,目标节点存在于当前容器，value覆盖
+        if (targetEntryNode.relativePosition == RelativePosition.CURRENT) {
+            //暂存旧value
+            V oldValue = targetEntryNode.target.value;
+            targetEntryNode.target.value = value;
+            //返回旧的value
+            return oldValue;
+        } else {
+            //新增加的节点
+            EntryNode<K, V> entryNode = new EntryNode<>(key, value, parent);
+            //新节点是父节点的左节点
+            if (targetEntryNode.relativePosition == RelativePosition.LEFT) {
+                parent.left = entryNode;
+            } else {
+                //新节点是父节点的右节点
+                parent.right = entryNode;
+            }
+            this.size++;
+            return null;
+        }
     }
 
     @Override
