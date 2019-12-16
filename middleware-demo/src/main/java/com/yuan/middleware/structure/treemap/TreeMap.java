@@ -1,10 +1,10 @@
 package com.yuan.middleware.structure.treemap;
 
 import java.util.Iterator;
+import java.util.Objects;
 
 /**
- * 二叉搜索树的左子树上结点的值均小于根结点的值；
- * 右子树上结点的值均大于根结点的值；
+ * 二叉搜索树的左子树上结点的值均小于根结点的值，右子树上结点的值均大于根结点的值；
  * 二叉搜索树的左、右子树也分别为二叉搜索树。
  *
  * @param <K>
@@ -195,16 +195,6 @@ public class TreeMap<K, V> implements Map<K, V> {
         return entryNode;
     }
 
-    public static void main(String[] args) {
-        java.util.TreeMap m = new java.util.TreeMap(new java.util.Comparator() {
-            @Override
-            public int compare(Object o1, Object o2) {
-                return 0;
-            }
-        });
-        TreeMap map = new TreeMap();
-    }
-
     @Override
     public V put(K key, V value) {
         if (this.size == 0) {
@@ -240,48 +230,199 @@ public class TreeMap<K, V> implements Map<K, V> {
 
     @Override
     public V remove(K key) {
-        return null;
+        if (this.root == null) {
+            return null;
+        }
+        //查询目标节点
+        TargetEntryNode<K, V> targetEntryNode = getTargetEntryNode(key);
+        if (targetEntryNode.relativePosition != RelativePosition.CURRENT) {
+            //没有找到目标节点
+            return null;
+        } else {
+            //找到了目标节点
+            //从二叉树中删除目标节点
+            deleteEntryNode(targetEntryNode.target);
+            return targetEntryNode.target.getValue();
+        }
+    }
+
+    /**
+     * 将目标节点从二叉搜索树中删除
+     *
+     * @param target
+     */
+    private void deleteEntryNode(EntryNode<K, V> target) {
+        /*
+         * 删除二叉搜索树节点
+         *     1.无左右孩子
+         *         直接删除
+         *     2.只有左孩子或者右孩子
+         *         将唯一的孩子和parent节点直接相连
+         *     3.既有左孩子，又有右孩子
+         *         找到自己的直接前驱/后继（左侧的最右节点/右侧的最左节点）
+         *         将自己和直接后继进行交换，转换为第1或第2种情况，并将自己删除
+         * */
+        //size自减1
+        this.size--;
+        //既有左孩子又有右孩子
+        if (target.left != null && target.right != null) {
+            //可以将当前节点的后继节点或者前驱节点替换当前节点，都能保证替换后的二叉树还是有序
+            EntryNode<K, V> successor = getSuccessor(target);
+            //target的key/value和自己的后继交换
+            target.value = successor.value;
+            target.key = successor.key;
+            //target指向自己的后继，转换为第一/第二种情况,由于原来的目标节点是既有左孩子又有右孩子，后继节点必然是右孩子的最左节点或者是右孩子自己，
+            //所以必然后继节点只会是没有孩子或者只有一个右孩子，不可能同时有左右孩子。
+            target = successor;
+        }
+        EntryNode<K, V> parent = target.parent;
+        //获得删除节点或者(被代替删除节点):从左右孩子中选择一个,左右孩子只会存在一个
+        EntryNode<K, V> replacement = (target.left == null ? target.right : target.left);
+        //如果没有孩子节点
+        if (replacement == null) {
+            //被删除的target没有父节点说明是根节点，且无左右孩子
+            if (parent == null) {
+                this.root = null;
+            } else {
+                //判断target和parent的相对位置，删除他们之间的引用关系
+                RelativePosition relativeByParent = getRelativeByParent(parent, target);
+                if (relativeByParent == RelativePosition.LEFT) {
+                    //是父节点的左节点
+                    parent.left = null;
+                } else {
+                    //是父节点的右节点
+                    parent.right = null;
+                }
+            }
+        } else {
+            //只有左孩子或者右孩子
+            //被删除的target是根节点，且只有左孩子或者右孩子
+            if (parent == null) {
+                this.root = (target.left == null ? target.right : target.left);
+            } else {
+                //将被删除节点的孩子节点的父节点引用指向被删除节点的父节点
+                replacement.parent = target.parent;
+                RelativePosition relativePosition = getRelativeByParent(parent, target);
+                //:::被删除节点的双亲节点指向被代替的节点
+                if (relativePosition == RelativePosition.LEFT) {
+                    parent.left = replacement;
+                } else {
+                    parent.right = replacement;
+                }
+            }
+        }
     }
 
     @Override
     public V get(K key) {
-        return null;
+        return (getEntryNode(key) == null ? null : getEntryNode(key).value);
+    }
+
+    /**
+     * 获取目标节点
+     *
+     * @param key
+     * @return
+     */
+    private EntryNode<K, V> getEntryNode(K key) {
+        //判断二叉树是否有节点
+        if (this.root == null) {
+            return null;
+        } else {
+            TargetEntryNode<K, V> targetEntryNode = getTargetEntryNode(key);
+            if (targetEntryNode.relativePosition == RelativePosition.CURRENT) {
+                return targetEntryNode.target;
+            }
+            //没有找到目标节点
+            return null;
+        }
+    }
+
+    public static void main(String[] args) {
+        TreeMap<String, Object> treeMap = new TreeMap();
+        treeMap.put("yuan", null);
+        Object o = treeMap.get("yuan");
+        System.out.println(o);
+        System.out.println(treeMap.containsKey("yuan"));
     }
 
     @Override
     public boolean containsKey(K key) {
-        return false;
+        return getEntryNode(key) != null;
     }
 
     @Override
     public boolean containsValue(V value) {
+        //获取key值最小的节点
+        EntryNode<K, V> firstNode = getFirstNode();
+        while (firstNode != null) {
+            if (Objects.equals(firstNode.getValue(), value)) {
+                //当前节点value匹配，返回true
+                return true;
+            }
+            //最小的节点->指向下一个直接后继节点，相当于二叉树遍历的中序遍历，当一个节点找不到后继节点说明遍历完了
+            firstNode = getSuccessor(firstNode);
+        }
+        //遍历整颗树之后，还未匹配，返回false
         return false;
     }
 
     @Override
     public int size() {
-        return 0;
+        return this.size;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return (this.root == null);
     }
 
     @Override
     public void clear() {
+        this.size = 0;
+        this.root = null;
+    }
 
+    @Override
+    public String toString() {
+        Iterator<Map.EntryNode<K, V>> iterator = this.iterator();
+
+        //:::空容器
+        if (!iterator.hasNext()) {
+            return "[]";
+        }
+
+        //:::容器起始使用"["
+        StringBuilder s = new StringBuilder("[");
+
+        //:::反复迭代
+        while (true) {
+            //:::获得迭代的当前元素
+            Map.EntryNode<K, V> data = iterator.next();
+
+            //:::判断当前元素是否是最后一个元素
+            if (!iterator.hasNext()) {
+                //:::是最后一个元素，用"]"收尾
+                s.append(data).append("]");
+                //:::返回 拼接完毕的字符串
+                return s.toString();
+            } else {
+                //:::不是最后一个元素
+                //:::使用", "分割，拼接到后面
+                s.append(data).append(", ");
+            }
+        }
     }
 
     @Override
     public Iterator<Map.EntryNode<K, V>> iterator() {
-        return null;
+        return new Itr();
     }
 
     /**
      * 二叉搜索树 内部节点
      */
-    static class EntryNode<K, V> implements Map.EntryNode<K, V> {
+    private static class EntryNode<K, V> implements Map.EntryNode<K, V> {
         /**
          * key值
          */
@@ -362,6 +503,62 @@ public class TreeMap<K, V> implements Map<K, V> {
             this.target = target;
             this.parent = parent;
             this.relativePosition = relativePosition;
+        }
+    }
+
+    /**
+     * 二叉搜索树 迭代器实现
+     * 采用中序遍历
+     */
+    private class Itr implements Iterator<Map.EntryNode<K, V>> {
+        /**
+         * 当前迭代节点
+         */
+        private EntryNode<K, V> currentNode;
+
+        /**
+         * 下一个节点
+         */
+        private EntryNode<K, V> nextNode;
+
+        private Itr() {
+            //初始化时，nextNode指向第一个节点
+            this.nextNode = TreeMap.this.getFirstNode();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return this.nextNode != null;
+        }
+
+        @Override
+        public Map.EntryNode<K, V> next() {
+            this.currentNode = this.nextNode;
+            //采用中序遍历
+            this.nextNode = TreeMap.this.getSuccessor(this.nextNode);
+            return currentNode;
+        }
+
+        /**
+         * 删除采用中序遍历每次删除最小的值
+         * 中序遍历:每次都找后继节点就能从小到大不会遗漏的遍历完
+         */
+        @Override
+        public void remove() {
+            if (this.currentNode == null) {
+                throw new RuntimeException("迭代器状态异常: 可能在一次迭代中进行了多次remove操作");
+            }
+            if (currentNode.left != null && currentNode.right != null) {
+                // 同时存在左右孩子时删除的是后继节点，当前节点没有被删除只是key/value改变了，相关联的节点引用没变
+                // nextNode不能指向后继节点了，因为后继节点不存在，还是指向当前节点，当前节点的值是原来后继节点的值。
+                //(第一小的节点)当前节点有左右节点，删除后删除的是后继节点，当前节点变成(第二小的节点)，所以下个节点还是当前节点
+                this.nextNode = this.currentNode;
+            }
+            //删除当前节点，删除节点后二叉树的顺序还是符合，左子树上结点的值均小于父结点的值，右子树上结点的值均大于父结点的值
+            //当前节点被删除后，所以取后继节点，后继节点就是整个二叉树中最小的，每次都找后继节点就能从小到大不会遗漏的遍历完。
+            deleteEntryNode(currentNode);
+            //currentNode设置为null，防止反复调用remove方法
+            this.currentNode = null;
         }
     }
 }
