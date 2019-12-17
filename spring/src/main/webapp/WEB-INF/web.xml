@@ -69,6 +69,17 @@
         <servlet-name>ChangeHttpServlet</servlet-name>
         <url-pattern>/changeHttpServlet</url-pattern>
     </servlet-mapping>
+
+    <!--cookie 测试-->
+    <servlet>
+        <servlet-name>cookieServlet</servlet-name>
+        <servlet-class>com.yuan.spring.config.CookieServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>cookieServlet</servlet-name>
+        <url-pattern>/cookieServlet</url-pattern>
+    </servlet-mapping>
+
     <!--encodingFilter-->
     <filter>
         <filter-name>encodingFilter</filter-name>
