@@ -6,3 +6,4 @@
 /middleware-rabbitmq/.mvn/
 /middleware-redis/target/
 /middleware-rabbitmq/.mvn/
+/spring/target/
