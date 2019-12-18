@@ -508,7 +508,11 @@ public class TreeMap<K, V> implements Map<K, V> {
 
     /**
      * 二叉搜索树 迭代器实现
-     * 采用中序遍历
+     * 1. 二叉搜索树从最左节点开始，以中序遍历的方式遍历整颗树
+     *
+     * 2. 在迭代器初始化时，迭代器指向最小的节点(也就是最左节点)
+     *
+     * 3. 迭代器迭代时，下一个节点总是指向当前节点的直接后继
      */
     private class Itr implements Iterator<Map.EntryNode<K, V>> {
         /**
