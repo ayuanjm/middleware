@@ -338,14 +338,6 @@ public class TreeMap<K, V> implements Map<K, V> {
         }
     }
 
-    public static void main(String[] args) {
-        TreeMap<String, Object> treeMap = new TreeMap();
-        treeMap.put("yuan", null);
-        Object o = treeMap.get("yuan");
-        System.out.println(o);
-        System.out.println(treeMap.containsKey("yuan"));
-    }
-
     @Override
     public boolean containsKey(K key) {
         return getEntryNode(key) != null;
@@ -509,9 +501,9 @@ public class TreeMap<K, V> implements Map<K, V> {
     /**
      * 二叉搜索树 迭代器实现
      * 1. 二叉搜索树从最左节点开始，以中序遍历的方式遍历整颗树
-     *
+     * <p>
      * 2. 在迭代器初始化时，迭代器指向最小的节点(也就是最左节点)
-     *
+     * <p>
      * 3. 迭代器迭代时，下一个节点总是指向当前节点的直接后继
      */
     private class Itr implements Iterator<Map.EntryNode<K, V>> {
@@ -538,7 +530,7 @@ public class TreeMap<K, V> implements Map<K, V> {
         @Override
         public Map.EntryNode<K, V> next() {
             this.currentNode = this.nextNode;
-            //采用中序遍历
+            //采用中序遍历迭代算法
             this.nextNode = TreeMap.this.getSuccessor(this.nextNode);
             return currentNode;
         }
@@ -565,4 +557,41 @@ public class TreeMap<K, V> implements Map<K, V> {
             this.currentNode = null;
         }
     }
+
+    /**
+     * 先序遍历递归: 首先访问根，再先序遍历左子树，最后先序遍历右子树
+     * 后序遍历递归: 首先后序遍历左子树，再后序遍历右子树，最后访问根
+     * 中序遍历递归: 首先中序遍历左子树，再访问根，最后中序遍历右子树
+     * 3种遍历的递归代码相似，就是什么时候输出root节点，先输出root为先序，后输出root为后序，左右节点判断非null中间输出root为中序
+     * 其中 中序遍历是有序的，采用迭代时，可以先查找最左节点，然后查找后继节点。
+     * 调用该方法前先校验root不为null
+     *
+     * @param root 根节点
+     */
+    public void preorderTraversal(EntryNode<K, V> root) {
+        //先序遍历
+//        System.out.println(root);
+        if (root.left != null) {
+            preorderTraversal(root.left);
+        }
+        //中序遍历
+        System.out.println(root.value);
+        if (root.right != null) {
+            preorderTraversal(root.right);
+        }
+        //后序遍历
+//        System.out.println(root);
+    }
+
+
+    public static void main(String[] args) {
+        TreeMap treeMap = new TreeMap();
+        treeMap.put(12, 12);
+        for (int i = 8; i < 15; i++) {
+            treeMap.put(i, i);
+        }
+        treeMap.preorderTraversal(treeMap.root);
+
+    }
+
 }
