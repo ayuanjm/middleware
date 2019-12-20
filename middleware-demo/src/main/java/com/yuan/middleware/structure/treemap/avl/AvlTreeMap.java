@@ -226,8 +226,11 @@ public class AvlTreeMap<K, V> implements Map<K, V> {
 
     /**
      * 进行旋转,使用3+4重构完成重平衡
+     * 左旋：以某个结点作为支点(旋转结点)，其右子结点变为旋转结点的父结点，右子结点的左子结点变为旋转结点的右子结点，左子结点保持不变。
+     * 右旋：以某个结点作为支点(旋转结点)，其左子结点变为旋转结点的父结点，左子结点的右子结点变为旋转结点的左子结点，右子结点保持不变。
+     * 变色：结点的颜色由红变黑或由黑变红。
      *
-     * @param currentNode  当前节点
+     * @param currentNode  当前节点 失横的节点
      * @param sonNode      子节点
      * @param grandSonNode 孙子节点
      * @return 重构之后子树的树根节点
@@ -236,13 +239,14 @@ public class AvlTreeMap<K, V> implements Map<K, V> {
         if (isLeftChild(currentNode, sonNode)) {
             //左 zig
             if (isLeftChild(sonNode, grandSonNode)) {
-                //左-左   zig-zig旋转
+                //左-左   将当前节点右旋
                 refactor34(grandSonNode, sonNode, currentNode,
                         grandSonNode.left, grandSonNode.right, sonNode.right, currentNode.right);
 
                 return sonNode;
             } else {
-                //左-右   zig-zag旋转
+                //左-右   先变成左左
+                //左-右   先将较高子节点左旋，再将当前节点右旋
                 refactor34(sonNode, grandSonNode, currentNode,
                         sonNode.left, grandSonNode.left, grandSonNode.right, currentNode.right);
 
@@ -251,13 +255,14 @@ public class AvlTreeMap<K, V> implements Map<K, V> {
         } else {
             //右 zag
             if (isLeftChild(sonNode, grandSonNode)) {
-                //右-左   zag-zig旋转
+                //右-左   先变成右右
+                //右-左   先将较高子节点右旋，再将当前节点左旋
                 refactor34(currentNode, grandSonNode, sonNode,
                         currentNode.left, grandSonNode.left, grandSonNode.right, sonNode.right);
 
                 return grandSonNode;
             } else {
-                //右-右   zag-zag旋转
+                //右-右   将当前节点左旋
                 refactor34(currentNode, sonNode, grandSonNode,
                         currentNode.left, sonNode.left, grandSonNode.left, grandSonNode.right);
 
