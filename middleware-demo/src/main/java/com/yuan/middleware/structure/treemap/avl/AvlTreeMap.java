@@ -247,9 +247,12 @@ public class AvlTreeMap<K, V> implements Map<K, V> {
             } else {
                 //左-右   先变成左左
                 //左-右   先将较高子节点左旋，再将当前节点右旋
-                refactor34(sonNode, grandSonNode, currentNode,
-                        sonNode.left, grandSonNode.left, grandSonNode.right, currentNode.right);
-
+//                refactor34(sonNode, grandSonNode, currentNode,
+//                        sonNode.left, grandSonNode.left, grandSonNode.right, currentNode.right);
+                //先将较高子节点左旋
+                levorotatory(sonNode);
+                //再将当前节点右旋
+                dextrorotatory(currentNode);
                 return grandSonNode;
             }
         } else {
@@ -269,6 +272,48 @@ public class AvlTreeMap<K, V> implements Map<K, V> {
                 return sonNode;
             }
         }
+    }
+
+    /**
+     * 对当前节点(父节点) 左旋: 只会改变旋转节点和右节点的高度，不会影响其他节点高度。
+     * 以某个结点作为支点(旋转结点)，其右子结点变为旋转结点的父结点，右子结点的左子结点变为旋转结点的右子结点，左子结点保持不变。
+     *
+     * @param currentNode 旋转节点
+     */
+    private void levorotatory(EntryNode<K, V> currentNode) {
+        //新的父节点
+        EntryNode<K, V> node;
+        //旋转节点的右节点变为父节点
+        node = currentNode.right;
+        //右子结点的左子结点变为旋转结点的右子结点
+        currentNode.right = node.left;
+        //旋转节点变为 旋转后的左节点
+        node.left = currentNode;
+        //更新旋转后的父节点高度
+        updateHeight(node);
+        //更新旋转后的旋转节点的高度
+        updateHeight(currentNode);
+    }
+
+    /**
+     * 对当前节点(父节点) 右旋: 只会改变旋转节点和左节点的高度，不会影响其他节点高度。
+     * 以某个结点作为支点(旋转结点)，其左子结点变为旋转结点的父结点，左子结点的右子结点变为旋转结点的左子结点，右子结点保持不变。
+     *
+     * @param currentNode
+     */
+    private void dextrorotatory(EntryNode<K, V> currentNode) {
+        //新的父节点
+        EntryNode<K, V> node;
+        //旋转节点的左节点变为父节点
+        node = currentNode.left;
+        //左子结点的右子结点变为旋转结点的左子结点
+        currentNode.left = node.right;
+        //旋转节点变为 旋转后的右节点
+        node.right = currentNode;
+        //更新旋转后的父节点高度
+        updateHeight(node);
+        //更新旋转后的旋转节点的高度
+        updateHeight(currentNode);
     }
 
     /**
