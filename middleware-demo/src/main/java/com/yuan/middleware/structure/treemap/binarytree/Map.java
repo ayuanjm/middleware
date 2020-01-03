@@ -1,4 +1,4 @@
-package com.yuan.middleware.structure.treemap;
+package com.yuan.middleware.structure.treemap.binarytree;
 
 import java.util.Iterator;
 

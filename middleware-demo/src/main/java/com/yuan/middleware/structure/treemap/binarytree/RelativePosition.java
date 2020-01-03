@@ -1,4 +1,4 @@
-package com.yuan.middleware.structure.treemap;
+package com.yuan.middleware.structure.treemap.binarytree;
 
 /**
  * target 和目标节点的相对位置

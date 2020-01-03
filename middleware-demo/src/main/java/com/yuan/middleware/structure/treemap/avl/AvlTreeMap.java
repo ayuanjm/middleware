@@ -1,8 +1,8 @@
 package com.yuan.middleware.structure.treemap.avl;
 
-import com.yuan.middleware.structure.treemap.Comparator;
-import com.yuan.middleware.structure.treemap.Map;
-import com.yuan.middleware.structure.treemap.RelativePosition;
+import com.yuan.middleware.structure.treemap.binarytree.Comparator;
+import com.yuan.middleware.structure.treemap.binarytree.Map;
+import com.yuan.middleware.structure.treemap.binarytree.RelativePosition;
 
 import java.util.Iterator;
 
