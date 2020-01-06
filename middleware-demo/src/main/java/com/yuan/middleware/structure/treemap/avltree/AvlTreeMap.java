@@ -1,4 +1,4 @@
-package com.yuan.middleware.structure.treemap.avl;
+package com.yuan.middleware.structure.treemap.avltree;
 
 import com.yuan.middleware.structure.treemap.binarytree.Comparator;
 import com.yuan.middleware.structure.treemap.binarytree.Map;

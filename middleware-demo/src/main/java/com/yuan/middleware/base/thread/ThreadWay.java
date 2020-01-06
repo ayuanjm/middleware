@@ -1,5 +1,7 @@
 package com.yuan.middleware.base.thread;
 
+import lombok.SneakyThrows;
+
 import java.util.Random;
 import java.util.concurrent.*;
 
@@ -114,5 +116,21 @@ public class ThreadWay {
                 threadPoolExecutor.shutdown();
             }
         }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread thread = new Thread(new Runnable() {
+            @SneakyThrows
+            @Override
+            public void run() {
+                System.out.println(Thread.currentThread().getName());
+                Thread.sleep(1000);
+                System.out.println("thread sleep end");
+            }
+        });
+        thread.start();
+        thread.interrupt();
+        Thread.sleep(1000);
+        System.out.println(Thread.currentThread().getName());
     }
 }

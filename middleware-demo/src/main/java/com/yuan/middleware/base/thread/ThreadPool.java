@@ -102,7 +102,6 @@ public class ThreadPool {
             //自己new出来的线程池使用后必须关闭，从spring容器中取出来的单例 线程池对象 使用后不能关闭
             System.out.println("...........");
             threadPool.shutdown();
-            System.exit(0);
         }
     }
 }
