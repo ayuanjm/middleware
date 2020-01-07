@@ -44,8 +44,7 @@ public class RedisConfiguration {
      * @return
      */
     @Bean
-    @ConditionalOnProperty(name = "spring.redis.host")
-    RedissonClient redissonSingle() {
+    public RedissonClient redissonSingle() {
         Config config = new Config();
         SingleServerConfig serverConfig = config.useSingleServer()
                 .setAddress("redis://" + redssionProperties.getHost() + ":" + redssionProperties.getPort());
