@@ -36,8 +36,8 @@ public class RedissonDistributedLockerController {
                 if (getLock) {
                     System.out.println(Thread.currentThread().getName() + "获取到锁");
                     try {
-                        //模拟业务场景执行时间
-                        Thread.sleep(3000);
+                        //模拟业务场景执行时间,业务执行时间2秒,等待获取锁的时间5秒,可以有3个线程获取到锁
+                        Thread.sleep(2000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } finally {

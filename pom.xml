@@ -26,6 +26,7 @@
         <module>middleware-rabbitmq</module>
         <module>middleware-api</module>
         <module>middleware-demo</module>
+        <module>spring</module>
     </modules>
     <dependencies>
         <dependency>
