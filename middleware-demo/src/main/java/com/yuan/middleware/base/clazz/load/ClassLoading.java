@@ -1,5 +1,7 @@
 package com.yuan.middleware.base.clazz.load;
 
+import java.lang.reflect.Field;
+
 /**
  *
  * 类加载过程：
@@ -79,6 +81,12 @@ public class ClassLoading {
 
     public ClassLoading() {
         System.out.println("构造方法");
+    }
+
+    public static void main(String[] args) throws Exception {
+        Field mail = ClassLoading.class.getDeclaredField("mail");
+        String o = (String) mail.get(ClassLoading.class);
+        System.out.println(o);
     }
 
 }
