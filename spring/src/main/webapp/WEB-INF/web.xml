@@ -80,6 +80,16 @@
         <url-pattern>/cookieServlet</url-pattern>
     </servlet-mapping>
 
+    <!--session 测试-->
+    <servlet>
+        <servlet-name>sessionServlet</servlet-name>
+        <servlet-class>com.yuan.spring.config.SessionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>sessionServlet</servlet-name>
+        <url-pattern>/sessionServlet</url-pattern>
+    </servlet-mapping>
+
     <!--encodingFilter-->
     <filter>
         <filter-name>encodingFilter</filter-name>
@@ -96,9 +106,9 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!--Session-->
+    <!--Session过期时间30分钟-->
     <session-config>
-        <session-timeout>15</session-timeout>
+        <session-timeout>30</session-timeout>
     </session-config>
 
 </web-app>
