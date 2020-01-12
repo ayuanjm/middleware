@@ -1,9 +1,6 @@
 package com.yuan.spring.config;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 /**
@@ -51,6 +48,17 @@ public class SessionServlet extends HttpServlet {
          */
         session.setMaxInactiveInterval(60);
 
+        /**
+         * 浏览器关闭也可以保持session，下次访问还能访问到之前的session
+         * 将JESSIONID这个cookie持久化
+         */
+        String id = session.getId();
+        //覆盖JESSIONID的值
+        Cookie cookie = new Cookie("JESSIONID", id);
+        //设置cookie的持久时间,以秒为单位
+        cookie.setMaxAge(60 * 60);
+        //返回cookie给浏览器
+        resp.addCookie(cookie);
         /**
          * cookie 被禁用导致会话获取session失效，每次都生成新的session
          * 可以使用url重写 把要访问的地址动态的加上JESSIONID
