@@ -281,18 +281,37 @@ public class AvlTreeMap<K, V> implements Map<K, V> {
      * @param currentNode 旋转节点
      */
     private void levorotatory(EntryNode<K, V> currentNode) {
-        //新的父节点
-        EntryNode<K, V> node;
-        //旋转节点的右节点变为父节点
-        node = currentNode.right;
-        //右子结点的左子结点变为旋转结点的右子结点
-        currentNode.right = node.left;
-        //旋转节点变为 旋转后的左节点
-        node.left = currentNode;
-        //更新旋转后的父节点高度
-        updateHeight(node);
-        //更新旋转后的旋转节点的高度
-        updateHeight(currentNode);
+        if (currentNode != null) {
+            // 当前节点的右节点 为旋转后的父节点
+            EntryNode<K, V> r = currentNode.right;
+            // 当前节点的右节点的左节点 为旋转后当前节点的右节点
+            currentNode.right = r.left;
+            // 如果当前节点的右节点的左节点不为null 旋转后需要改变它的父节点引用指向
+            if (r.left != null) {
+                // 当前节点的右节点的左节点旋转后父节点为当前节点
+                r.left.parent = currentNode;
+            }
+            // 当前节点的右节点 旋转后需要改变它的父节点引用指向 指向当前节点的父节点
+            r.parent = currentNode.parent;
+            // 如果当前节点的父节点为null说明当前节点是根节点 当前节点的右节点旋转后也是根节点
+            if (currentNode.parent == null) {
+                this.root = r;
+            } else if (currentNode.parent.left == currentNode) {
+                // 当前节点是父节点的左节点 当前节点的右节点旋转后也是父节点的左节点
+                currentNode.parent.left = r;
+            } else {
+                // 当前节点是父节点的右节点 当前节点的右节点旋转后也是父节点的右节点
+                currentNode.parent.right = r;
+            }
+            // 当前节点的右节点 旋转后的左节点为当前节点
+            r.left = currentNode;
+            // 旋转后当前节点的父节点 为旋转前当前节点的右节点
+            currentNode.parent = r;
+            //更新旋转后的父节点高度
+            updateHeight(r);
+            //更新旋转后的旋转节点的高度
+            updateHeight(currentNode);
+        }
     }
 
     /**
@@ -302,18 +321,27 @@ public class AvlTreeMap<K, V> implements Map<K, V> {
      * @param currentNode
      */
     private void dextrorotatory(EntryNode<K, V> currentNode) {
-        //新的父节点
-        EntryNode<K, V> node;
-        //旋转节点的左节点变为父节点
-        node = currentNode.left;
-        //左子结点的右子结点变为旋转结点的左子结点
-        currentNode.left = node.right;
-        //旋转节点变为 旋转后的右节点
-        node.right = currentNode;
-        //更新旋转后的父节点高度
-        updateHeight(node);
-        //更新旋转后的旋转节点的高度
-        updateHeight(currentNode);
+        if (currentNode != null) {
+            EntryNode<K, V> l = currentNode.left;
+            currentNode.left = l.right;
+            if (l.right != null) {
+                l.right.parent = currentNode;
+            }
+            l.parent = currentNode.parent;
+            if (currentNode.parent == null) {
+                this.root = l;
+            } else if (currentNode.parent.left == currentNode) {
+                currentNode.parent.left = l;
+            } else {
+                currentNode.parent.right = l;
+            }
+            l.right = currentNode;
+            currentNode.parent = l;
+            //更新旋转后的父节点高度
+            updateHeight(l);
+            //更新旋转后的旋转节点的高度
+            updateHeight(currentNode);
+        }
     }
 
     /**
