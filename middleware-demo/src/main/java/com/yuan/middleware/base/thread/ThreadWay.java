@@ -128,9 +128,19 @@ public class ThreadWay {
                 System.out.println("thread sleep end");
             }
         });
+        Thread thread1 = new Thread(new Runnable() {
+            @SneakyThrows
+            @Override
+            public void run() {
+                System.out.println(Thread.currentThread().getName());
+                Thread.sleep(1000);
+                System.out.println("thread sleep end");
+            }
+        });
         thread.start();
-        thread.interrupt();
-        Thread.sleep(1000);
+        thread1.start();
+        thread.join();
+        thread1.join();
         System.out.println(Thread.currentThread().getName());
     }
 }

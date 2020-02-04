@@ -1,17 +1,18 @@
 package com.yuan.middleware.base.io;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
 /**
@@ -103,7 +104,11 @@ public class FileController {
         fis.close();
     }
 
-
+    @RequestMapping("/excel")
+    public String export(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws UnsupportedEncodingException {
+        ExcelUtils.exportExcel(servletResponse);
+        return servletRequest.getRequestURI();
+    }
 }
 
 

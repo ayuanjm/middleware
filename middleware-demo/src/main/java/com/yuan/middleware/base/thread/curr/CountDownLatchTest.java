@@ -29,6 +29,7 @@ public class CountDownLatchTest {
 
     /**
      * 指令重排
+     *
      * @throws InterruptedException
      */
     private static void reordering() throws InterruptedException {
