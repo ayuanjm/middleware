@@ -10,7 +10,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import redis.clients.jedis.JedisPoolConfig;
 
 import javax.annotation.Resource;
 
@@ -37,6 +39,24 @@ public class RedisConfiguration {
         return redisTemplate;
     }
 
+    /**
+     * 连接redis的工厂类
+     * @return
+     */
+    @Bean
+    public JedisConnectionFactory jedisConnectionFactory() {
+        JedisConnectionFactory factory = new JedisConnectionFactory();
+        factory.setHostName(redssionProperties.getHost());
+        factory.setPort(redssionProperties.getPort());
+        factory.setPassword(redssionProperties.getPassword());
+        factory.setDatabase(redssionProperties.getDatabase());
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setTestOnBorrow(true);
+        jedisPoolConfig.setTestOnReturn(true);
+        jedisPoolConfig.setBlockWhenExhausted(false);
+        factory.setPoolConfig(jedisPoolConfig);
+        return factory;
+    }
 
     /**
      * redisson单机模式自动装配
