@@ -1,4 +1,4 @@
-package com.yuan.middleware.base.thread.sync;
+package com.yuan.middleware.base.thread.markword;
 
 import lombok.SneakyThrows;
 import org.openjdk.jol.info.ClassLayout;

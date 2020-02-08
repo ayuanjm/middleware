@@ -1,4 +1,4 @@
-package com.yuan.middleware.base.thread;
+package com.yuan.middleware.base.thread.pool;
 
 import java.util.concurrent.*;
 

@@ -1,4 +1,4 @@
-package com.yuan.middleware.base.thread;
+package com.yuan.middleware.base.thread.pool;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
