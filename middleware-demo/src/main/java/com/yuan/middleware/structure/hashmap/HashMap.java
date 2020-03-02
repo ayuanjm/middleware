@@ -577,18 +577,32 @@ public class HashMap<K, V> implements Map<K, V> {
     }
 
     public static void main(String[] args) throws Exception {
-        java.util.Map<Object, Object> map = new java.util.HashMap(12);
-        for (int i = 0; i < 13; i++) {
-            map.put(i, i);
-        }
+        /**
+         * 没有指定map大小时，执行 this.loadFactor = DEFAULT_LOAD_FACTOR; threshold没有赋值默认为0，
+         * 调用put方法为数组赋值DEFAULT_INITIAL_CAPACITY（16），之后阈值变为 16*0.75=12
+         *
+         * 指定map大小时,执行 this(initialCapacity, DEFAULT_LOAD_FACTOR); 根据传参进行位运算为threshold赋值，
+         * 调用put方法为数组赋值newCap = oldThr (threshold)，之后阈值变为 threshold*0.75
+         *
+         */
+        java.util.Map<Object, Object> map = new java.util.HashMap(1);
+//        for (int i = 0; i < 13; i++) {
+//            map.put(i, i);
+//        }
+        map.put(1,1);
         Class<? extends java.util.Map> mapClass = map.getClass();
-        //内部数组实际大小
+        //内部数组实际元素大小
         Field field = mapClass.getDeclaredField("size");
         field.setAccessible(true);
-        System.out.println(field.get(map));
+        System.out.println("内部数组实际元素大小："+field.get(map));
+        //阈值大小
+        Field field1 = mapClass.getDeclaredField("threshold");
+        field1.setAccessible(true);
+        System.out.println("阈值大小："+field1.get(map));
+
         //当内部数组为null时获取的是阈值，不为null，获取的是内部数组长度
         Method method = mapClass.getDeclaredMethod("capacity");
         method.setAccessible(true);
-        System.out.println(method.invoke(map));
+        System.out.println("内部数组长度："+method.invoke(map));
     }
 }
