@@ -18,7 +18,7 @@
 		update dept
 		<set>
 			<if test="dname != null">
-				danme = #{dname},
+				dname = #{dname},
 			</if>
 			<if test="dbSource != null">
 				db_source = #{dbSource},

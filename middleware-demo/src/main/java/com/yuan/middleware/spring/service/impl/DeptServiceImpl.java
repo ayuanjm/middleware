@@ -30,7 +30,7 @@ public class DeptServiceImpl implements DeptService {
         /**
          *
          */
-		log.info("Repeatable Read（可重复读）：即：事务A在读到一条数据之后，此时事务B对该数据进行了修改并提交，那么事务A再读该数据，读到的还是原来的内容。");
+        log.info("Repeatable Read（可重复读）：即：事务A在读到一条数据之后，此时事务B对该数据进行了修改并提交，那么事务A再读该数据，读到的还是原来的内容。");
         return dao.findById(id);
     }
 
@@ -42,6 +42,9 @@ public class DeptServiceImpl implements DeptService {
     @Override
     public Dept updateDept(Dept dept) {
         System.out.println(dept);
-        return dao.updateDept(dept);
+        dao.updateDept(dept);
+        System.out.println(1);
+        int a = 1 / 0;
+        return null;
     }
 }

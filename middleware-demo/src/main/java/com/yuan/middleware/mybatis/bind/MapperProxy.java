@@ -20,6 +20,14 @@ public class MapperProxy<T> implements InvocationHandler {
         this.sqlSession = sqlSession;
     }
 
+    /**
+     *
+     * @param proxy 产生的代理对象  实现smsMapper接口的对象
+     * @param method 方法 selectSmsById
+     * @param args 参数数组 {1}
+     * @return
+     * @throws Throwable
+     */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if (method.getDeclaringClass().getName().equals(SmsMapperXml.nameSpace)) {

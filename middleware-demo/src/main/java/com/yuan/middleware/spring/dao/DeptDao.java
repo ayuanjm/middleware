@@ -2,6 +2,7 @@ package com.yuan.middleware.spring.dao;
 
 
 import com.yuan.middleware.spring.entity.Dept;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -17,5 +18,5 @@ public interface DeptDao {
 
     List<Dept> findAll();
 
-    Dept updateDept(Dept dept);
+    Integer updateDept(Dept dept);
 }
