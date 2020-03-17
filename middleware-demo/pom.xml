@@ -50,6 +50,11 @@
             <artifactId>poi-ooxml-schemas</artifactId>
             <version>3.17</version>
         </dependency>
+        <!--引用AOP -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
 
 
     </dependencies>

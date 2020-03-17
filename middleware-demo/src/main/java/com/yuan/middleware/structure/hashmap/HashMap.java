@@ -40,7 +40,8 @@ public class HashMap<K, V> implements Map<K, V> {
     private final static int REHASH_BASE = 2;
 
     /**
-     * 默认的负载因子
+     * https://www.cnblogs.com/aspirant/p/11470928.html
+     * 默认的负载因子 空间与时间的平衡,提高空间利用率和 减少查询成本的折中，主要是泊松分布，0.75的话碰撞最小
      */
     private final static float DEFAULT_LOAD_FACTOR = 0.75f;
 
@@ -316,6 +317,18 @@ public class HashMap<K, V> implements Map<K, V> {
      * 单个插槽内的数据进行rehash
      * 当hash冲突比较频繁时，查询效率急剧降低。jdk在1.8版本的哈希表实现(java.util.HashMap)中，对这一场景进行了优化。
      * 当内部桶链表的节点个数超过一定数量(默认为8)时，会将插槽中的桶链表转换成一个红黑树(查询效率为O(logN))。
+     * * 0:    0.60653066
+     * * 1:    0.30326533
+     * * 2:    0.07581633
+     * * 3:    0.01263606
+     * * 4:    0.00157952
+     * * 5:    0.00015795
+     * * 6:    0.00001316
+     * * 7:    0.00000094
+     * * 8:    0.00000006
+     * * more: less than 1 in ten million
+     * 通过泊松分布发现链表长度大于8的概率不到千万分之一，这个时候去转红黑树，可以避免频繁的转换，还有一种说法 6/2 = 3(链表)，log8=3（红黑树）
+     * 也就是说用0.75作为加载因子(前提)，每个碰撞位置的链表长度超过８个是几乎不可能的。
      *
      * @param index       内部数组下标
      * @param newElements 内部数组
@@ -589,20 +602,20 @@ public class HashMap<K, V> implements Map<K, V> {
 //        for (int i = 0; i < 13; i++) {
 //            map.put(i, i);
 //        }
-        map.put(1,1);
+        map.put(1, 1);
         Class<? extends java.util.Map> mapClass = map.getClass();
         //内部数组实际元素大小
         Field field = mapClass.getDeclaredField("size");
         field.setAccessible(true);
-        System.out.println("内部数组实际元素大小："+field.get(map));
+        System.out.println("内部数组实际元素大小：" + field.get(map));
         //阈值大小
         Field field1 = mapClass.getDeclaredField("threshold");
         field1.setAccessible(true);
-        System.out.println("阈值大小："+field1.get(map));
+        System.out.println("阈值大小：" + field1.get(map));
 
         //当内部数组为null时获取的是阈值，不为null，获取的是内部数组长度
         Method method = mapClass.getDeclaredMethod("capacity");
         method.setAccessible(true);
-        System.out.println("内部数组长度："+method.invoke(map));
+        System.out.println("内部数组长度：" + method.invoke(map));
     }
 }

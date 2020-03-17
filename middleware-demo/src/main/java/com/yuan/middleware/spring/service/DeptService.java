@@ -19,4 +19,6 @@ public interface DeptService {
      */
     Dept updateDept(Dept dept);
 
+    void show(String message);
+
 }

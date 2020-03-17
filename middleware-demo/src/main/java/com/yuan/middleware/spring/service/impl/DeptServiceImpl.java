@@ -43,8 +43,11 @@ public class DeptServiceImpl implements DeptService {
     public Dept updateDept(Dept dept) {
         System.out.println(dept);
         dao.updateDept(dept);
-        System.out.println(1);
-        int a = 1 / 0;
         return null;
+    }
+
+    @Override
+    public void show(String message) {
+        System.out.println("环绕通知。。。" + message);
     }
 }
