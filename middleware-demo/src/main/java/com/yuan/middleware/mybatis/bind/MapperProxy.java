@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
  * @version 1.0
  * @date 2020/2/28 3:39 下午
  */
-public class MapperProxy<T> implements InvocationHandler {
+public class MapperProxy implements InvocationHandler {
     private SqlSession sqlSession;
 
     public MapperProxy(SqlSession sqlSession) {

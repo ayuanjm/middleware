@@ -35,12 +35,7 @@ public class DeptController {
 
     @RequestMapping("/updateDept")
     public Dept test(Dept dept) {
-        try {
-            Dept dept1 = service.updateDept(dept);
-        }catch (Exception e){
-            System.out.println(222222);
-            e.printStackTrace();
-        }
-        return null;
+        service.updateDept(dept);
+        return dept;
     }
 }

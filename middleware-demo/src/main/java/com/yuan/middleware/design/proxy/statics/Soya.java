@@ -1,4 +1,4 @@
-package com.yuan.middleware.design.proxy;
+package com.yuan.middleware.design.proxy.statics;
 
 
 /**

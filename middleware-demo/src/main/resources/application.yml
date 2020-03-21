@@ -19,6 +19,9 @@ spring:
     host: localhost
     port: 6379
     password: 123456Aa
+    #标准的JDK 基于接口的代理将起作用
+  aop:
+    proxy-target-class: false
 
 mybatis:
   mapper-locations:

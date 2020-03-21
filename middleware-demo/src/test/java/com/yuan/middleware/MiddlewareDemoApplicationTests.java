@@ -22,7 +22,8 @@ public class MiddlewareDemoApplicationTests {
 
     @Test
     public void contextLoads() {
-        System.out.println(ioc.getBean("beanScope"));
+        DeptService bean = ioc.getBean(DeptService.class);
+        System.out.println(bean);
     }
 
     /**
@@ -35,7 +36,7 @@ public class MiddlewareDemoApplicationTests {
     }
 
     @Test
-    public void Advice(){
+    public void Advice() {
         deptService.show("yuan");
     }
 

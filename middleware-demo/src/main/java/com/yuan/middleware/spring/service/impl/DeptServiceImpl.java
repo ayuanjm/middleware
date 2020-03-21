@@ -43,7 +43,7 @@ public class DeptServiceImpl implements DeptService {
     public Dept updateDept(Dept dept) {
         System.out.println(dept);
         dao.updateDept(dept);
-        return null;
+        return dept;
     }
 
     @Override

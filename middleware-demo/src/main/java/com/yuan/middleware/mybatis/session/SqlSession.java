@@ -29,6 +29,6 @@ public class SqlSession {
          * InvocationHandler h  实现了InvocationHandler接口的类，以后调用方法clazz（SmsMapper）接口的方法，实际上都是去调用 h的invoke方法
          */
         return (T) Proxy.newProxyInstance(clazz.getClassLoader(),
-                new Class[]{clazz}, new MapperProxy<>(this));
+                new Class[]{clazz}, new MapperProxy(this));
     }
 }
