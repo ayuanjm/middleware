@@ -109,7 +109,7 @@ public class NIOSocket {
                 key.cancel();
                 return;
             }
-            //有数据则进行读取，读取之前需要进行复位方法(把position 和limit进行复位)
+            //有数据则进行读取，读取之前需要进行复位方法(把position 和limit进行复位)，将缓冲区游标置为0。
             readBuffer.flip();
             //根据缓冲区的数据长度创建相应大小的byte数组，接收缓冲区的数据
             byte[] bytes = new byte[readBuffer.remaining()];

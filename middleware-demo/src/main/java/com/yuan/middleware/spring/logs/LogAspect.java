@@ -15,6 +15,7 @@ import java.util.Arrays;
 
 /**
  * 统一日志处理
+ * Order 切面执行顺序，值越大优先级越低
  *
  * @author yuanjm
  * @date 2020/03/17 11:06
@@ -35,18 +36,18 @@ public class LogAspect {
     /**
      * 环绕通知测试
      */
-//    @Pointcut("execution(public * com.yuan.middleware.spring.service.*.*(..))")
-//    public void aroundPointCut() {
-//    }
-//
-//    @Around("aroundPointCut()")
-//    public void around(ProceedingJoinPoint joinPoint) throws Throwable {
-//        System.out.println("around start");
-//        //执行目标方法
-////        joinPoint.proceed();
-//        System.out.println("around end");
-//
-//    }
+    @Pointcut("execution(public * com.yuan.middleware.spring.service.*.*(..))")
+    public void aroundPointCut() {
+    }
+
+    @Around("aroundPointCut()")
+    public void around(ProceedingJoinPoint joinPoint) throws Throwable {
+        System.out.println("around start");
+        //执行目标方法
+        joinPoint.proceed();
+        System.out.println("around end");
+
+    }
 
     /**
      * 在切点前执行

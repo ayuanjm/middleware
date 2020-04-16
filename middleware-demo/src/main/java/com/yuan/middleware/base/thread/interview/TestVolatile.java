@@ -21,22 +21,25 @@ public class TestVolatile {
         int size = 0;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+        TimeUnit.SECONDS.sleep(10);
         Thread t1 = new Thread(() -> {
             System.out.println("t1:" + a.size);
             while (true) {
                 if (a.size == 5) {
                     break;
                 }
+
             }
             System.out.println("t1,结束");
         });
+        t1.join(10);
         Thread t2 = new Thread(() -> {
             for (int i = 0; i < 10; i++) {
                 a.size++;
                 System.out.println("t2:" + a.size);
                 try {
-                    TimeUnit.SECONDS.sleep(1);
+                    TimeUnit.SECONDS.sleep(5);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

@@ -1,5 +1,7 @@
 package com.yuan.middleware.base.clazz.load;
 
+import com.yuan.middleware.base.thread.markword.TestAtomicInteger;
+
 import java.lang.reflect.Field;
 
 /**
@@ -61,6 +63,11 @@ public class ClassLoading {
      */
     public final static String NAME = "YUANJM";
 
+    /**
+     * ClassLoading.object 不会触发ClassLoading类的初始化
+     * final修饰引用类型，虽然引用的指向不会改变，但是真实的实例属性值还是可以改变，比如引用类型有其他引用类型的属性
+     */
+    public final static TestAtomicInteger object = new TestAtomicInteger();
     /**
      * static修饰 被调用时会加载类，加载静态变量和静态代码块
      */

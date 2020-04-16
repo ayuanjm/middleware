@@ -19,7 +19,7 @@ import java.util.concurrent.CountDownLatch;
  * @author yuan
  * @date 2020/01/15
  */
-public class CountDownLatchTest {
+public class CountDownLatch1 {
     private static int x = 0, y = 0;
     private static int a = 0, b = 0;
 

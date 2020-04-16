@@ -10,28 +10,25 @@ import java.nio.channels.WritableByteChannel;
 
 /**
  * 自定义类加载器，重写findClass
- * 破坏双亲委派原则，重写loadClass
- * https://www.cnblogs.com/luoyetl/p/10656134.html
- * https://www.jianshu.com/p/09f73af48a98
  * @author yjm
  * @date 2020/3/13 9:07 下午
  */
 public class UserClassLoad extends ClassLoader {
 
-//    @Override
-//    protected Class<?> findClass(String name) throws ClassNotFoundException {
-//        File file = new File("/Users/yuan/Downloads/People.class");
-//        try {
-//            byte[] bytes = getClassBytes(file);
-//            //defineClass方法可以把二进制流字节组成的文件转换为一个java.lang.Class
-//            Class<?> c = this.defineClass(name, bytes, 0, bytes.length);
-//            return c;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return super.findClass(name);
-//    }
+    @Override
+    protected Class<?> findClass(String name) throws ClassNotFoundException {
+        File file = new File("/Users/yuan/Downloads/arthas-output/Demo.class");
+        try {
+            byte[] bytes = getClassBytes(file);
+            //defineClass方法可以把二进制流字节组成的文件转换为一个java.lang.Class
+            Class<?> c = this.defineClass(name, bytes, 0, bytes.length);
+            return c;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return super.findClass(name);
+    }
 
     private byte[] getClassBytes(File file) throws Exception {
         // 这里要读入.class的字节，因此要使用字节流
@@ -54,8 +51,9 @@ public class UserClassLoad extends ClassLoader {
         return baos.toByteArray();
     }
 
-    public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public static void main(String[] args) throws ClassNotFoundException, InstantiationException {
         UserClassLoad mcl = new UserClassLoad();
-        Class<?> clazz = Class.forName("com.yuan.middleware.Demo", true, mcl);
+        Class<?> clazz = Class.forName("Demo", true, mcl);
+        System.out.println(clazz.getClassLoader());
     }
 }
