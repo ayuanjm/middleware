@@ -2,14 +2,74 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans.xsd
-    http://www.springframework.org/schema/context
-    http://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
     <!-- 自动扫描 -->
     <!-- 扫描注解类，并排除过滤 Controller -->
-    <context:component-scan  base-package="com.yuan">
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    <context:component-scan base-package="com.yuan">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
+    <!-- 引入外部配置文件 -->
+    <context:property-placeholder location="dbconfig.properties"></context:property-placeholder>
+    <!-- 配置数据源 -->
+    <bean id="driverManagerDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="url" value="${jdbc.url}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+    </bean>
+    <!-- 配置jdbcTemplate操作数据库 -->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="driverManagerDataSource"></property>
+    </bean>
+    <!--
+     配置基于注解的声明式事务
+     1、spring中提供事务管理器(事务切面)，配置这个事务管理器
+     2、开启基于注解的事务管理
+     <tx:annotation-driven transaction-manager="dataSourceTransactionManager"/>
+     3、给事务方法加注解@Transactional
+     -->
+    <bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="driverManagerDataSource"></property>
+    </bean>
+
+    <!-- 开启基于注解的事务管理 -->
+<!--    <tx:annotation-driven transaction-manager="dataSourceTransactionManager"/>-->
+
+    <!--
+    配置基于xml的声明式事务
+    1、spring中提供事务管理器(事务切面)，配置这个事务管理器
+    2、告诉spring哪些方法是事务方法(事务切面按照我们的切点表达式去切入事务方法)
+    -->
+    <!-- aop配置 -->
+    <aop:config>
+        <!-- 定义切点表达式，切入哪些方法-->
+        <aop:pointcut id="txPoint" expression="execution(* com.yuan.spring.service.*.*(..))"/>
+        <!-- 事务建议，事务增强 advice-ref指向事务管理器的配置-->
+        <aop:advisor advice-ref="myAdvice" pointcut-ref="txPoint"></aop:advisor>
+        <!-- 指定自己定义的切面用来记录日志，这个切面和事务无关-->
+        <aop:aspect ref="logAspect">
+            <aop:around method="around" pointcut-ref="txPoint"></aop:around>
+        </aop:aspect>
+
+    </aop:config>
+
+    <!-- 基于xml的声明式事务myAdvice，必须放在aop config中的advisor且指定切点表达式，这样事务才会生效-->
+    <tx:advice id="myAdvice" transaction-manager="dataSourceTransactionManager">
+        <!-- 事务属性 -->
+        <tx:attributes>
+            <!-- 指明哪些方法是事务方法，切点表达式只是说，事务管理器要切入这些方法，哪些方法要加事务使用tx:method指定
+            如果不用tx:method指定，则不会有事务,虽然事务管理器管理了所有切点表达式包含的方法都会执行TransactionAspectSupport切面方法，
+            但是没有tx:method指定的方法最终执行源码时TransactionAspectSupport的TransactionInfo属性为无事务，不会回滚异常。
+            -->
+            <tx:method name="get*" rollback-for="Exception"/>
+        </tx:attributes>
+    </tx:advice>
 </beans>

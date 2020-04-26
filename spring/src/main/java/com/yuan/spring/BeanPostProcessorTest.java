@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * @author yuan
  */
 @Data
-@Service
+//@Service
 public class BeanPostProcessorTest implements BeanPostProcessor {
 
     @Override
