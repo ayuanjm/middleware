@@ -1,6 +1,6 @@
 package com.yuan.spring.controller;
 
-import com.yuan.spring.service.ManagerService;
+import com.yuan.spring.service.ManagerServiceB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class ServletController {
 
     @Autowired
-    private ManagerService managerService;
+    private ManagerServiceB managerService;
 
     @RequestMapping("/index")
     public String index() {

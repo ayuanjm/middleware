@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 /**
+ * 编程式事务管理
+ *
  * @author yjm
  * @date 2020/4/26 11:34 上午
  */
@@ -29,8 +31,9 @@ public class SpringTransactionExample {
                  * 查看源码可知，获取的是ThreadLocal<Map<Object, Object>> resources = new NamedThreadLocal<>("Transactional resources");
                  * 取的是本地线程中的数据库连接，是和status同一个连接，获取本地线程中的Map<Object, Object>，map的key为DriverManagerDataSource对象，
                  * 因为status和DataSourceUtils.getConnection(dataSource)是同一个DriverManagerDataSource对象，所以获取的value数据库连接也是同一个，
-                 * 如果一次请求也就是一个线程，由于事务的传播，同时存在多个数据库连接，也就是map.size>1,也就是有多个DriverManagerDataSource key值，
-                 * 同一个线程中的不同事务通过key,获取不同的连接，如果是同一个事务那么他们的key相同。
+                 * TransactionStatus status = this.transactionManager.getTransaction(this);status是事务状态
+                 * result = action.doInTransaction(status);就是开始执行status -> {}里面自己写的代码是一个lambda表达式
+                 * 由于处于同一个事务中，去threadLocal中拿数据库链接也是同一个。
                  */
                 Connection connection = DataSourceUtils.getConnection(dataSource);
                 /**

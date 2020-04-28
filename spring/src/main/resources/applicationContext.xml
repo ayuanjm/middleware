@@ -41,7 +41,7 @@
     </bean>
 
     <!-- 开启基于注解的事务管理 -->
-<!--    <tx:annotation-driven transaction-manager="dataSourceTransactionManager"/>-->
+    <tx:annotation-driven transaction-manager="dataSourceTransactionManager"/>
 
     <!--
     配置基于xml的声明式事务
@@ -53,7 +53,7 @@
         <!-- 定义切点表达式，切入哪些方法-->
         <aop:pointcut id="txPoint" expression="execution(* com.yuan.spring.service.*.*(..))"/>
         <!-- 事务建议，事务增强 advice-ref指向事务管理器的配置-->
-        <aop:advisor advice-ref="myAdvice" pointcut-ref="txPoint"></aop:advisor>
+<!--        <aop:advisor advice-ref="myAdvice" pointcut-ref="txPoint"></aop:advisor>-->
         <!-- 指定自己定义的切面用来记录日志，这个切面和事务无关-->
         <aop:aspect ref="logAspect">
             <aop:around method="around" pointcut-ref="txPoint"></aop:around>
@@ -72,4 +72,9 @@
             <tx:method name="get*" rollback-for="Exception"/>
         </tx:attributes>
     </tx:advice>
+
+    <!-- 把我们的代理对象暴露出来,使得在一个类的内部调用自己的方法也能被事务控制，走事务切面
+         ((ManagerServiceB) AopContext.currentProxy()).insertUser();
+     -->
+    <aop:aspectj-autoproxy expose-proxy="true"/>
 </beans>
