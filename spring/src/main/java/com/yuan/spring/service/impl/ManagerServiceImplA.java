@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 /**
  * @author yuan
  */
-@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
+@Transactional(propagation = Propagation.SUPPORTS,rollbackFor = Exception.class)
 @Service
 public class ManagerServiceImplA implements ManagerServiceA {
     private static final String docker_sql = "INSERT INTO cloudDB01.dept (dname, db_source, version) VALUES ('12121', '001', 3)";
@@ -22,6 +22,7 @@ public class ManagerServiceImplA implements ManagerServiceA {
     @Override
     public Integer getUser() {
         int update = jdbcTemplate.update(my_sql);
+        int a = 1/0;
         return update;
     }
 

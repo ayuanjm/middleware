@@ -28,67 +28,67 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    <!--自定义servlet-->
-    <servlet>
-        <servlet-name>MyServlet</servlet-name>
-        <servlet-class>com.yuan.spring.config.MyServlet</servlet-class>
-        <init-param>
-            <param-name>userName</param-name>
-            <param-value>yuan</param-value>
-        </init-param>
-    </servlet>
-    <!--http://localhost:8080/index
-        url:资源定位符
-        静态资源:实际的文件 .html .css .png
-        动态资源:我们请求的动态资源是启用一段程序来处理（Servlet service方法 处理动态资源）
-    -->
-    <servlet-mapping>
-        <servlet-name>MyServlet</servlet-name>
-        <url-pattern>/index</url-pattern>
-    </servlet-mapping>
-    <!--HttpServlet-->
-    <servlet>
-        <servlet-name>MyHttpServlet</servlet-name>
-        <servlet-class>com.yuan.spring.config.MyHttpServlet</servlet-class>
-        <init-param>
-            <param-name>hobby</param-name>
-            <param-value>networkGames</param-value>
-        </init-param>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>MyHttpServlet</servlet-name>
-        <url-pattern>/myHttpServlet</url-pattern>
-    </servlet-mapping>
+<!--    &lt;!&ndash;自定义servlet&ndash;&gt;-->
+<!--    <servlet>-->
+<!--        <servlet-name>MyServlet</servlet-name>-->
+<!--        <servlet-class>com.yuan.spring.config.MyServlet</servlet-class>-->
+<!--        <init-param>-->
+<!--            <param-name>userName</param-name>-->
+<!--            <param-value>yuan</param-value>-->
+<!--        </init-param>-->
+<!--    </servlet>-->
+<!--    &lt;!&ndash;http://localhost:8080/index-->
+<!--        url:资源定位符-->
+<!--        静态资源:实际的文件 .html .css .png-->
+<!--        动态资源:我们请求的动态资源是启用一段程序来处理（Servlet service方法 处理动态资源）-->
+<!--    &ndash;&gt;-->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>MyServlet</servlet-name>-->
+<!--        <url-pattern>/index</url-pattern>-->
+<!--    </servlet-mapping>-->
+<!--    &lt;!&ndash;HttpServlet&ndash;&gt;-->
+<!--    <servlet>-->
+<!--        <servlet-name>MyHttpServlet</servlet-name>-->
+<!--        <servlet-class>com.yuan.spring.config.MyHttpServlet</servlet-class>-->
+<!--        <init-param>-->
+<!--            <param-name>hobby</param-name>-->
+<!--            <param-value>networkGames</param-value>-->
+<!--        </init-param>-->
+<!--    </servlet>-->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>MyHttpServlet</servlet-name>-->
+<!--        <url-pattern>/myHttpServlet</url-pattern>-->
+<!--    </servlet-mapping>-->
 
-    <!--ChangeHttpServlet 测试转发和重定向-->
-    <servlet>
-        <servlet-name>ChangeHttpServlet</servlet-name>
-        <servlet-class>com.yuan.spring.config.ChangeHttpServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ChangeHttpServlet</servlet-name>
-        <url-pattern>/changeHttpServlet</url-pattern>
-    </servlet-mapping>
+<!--    &lt;!&ndash;ChangeHttpServlet 测试转发和重定向&ndash;&gt;-->
+<!--    <servlet>-->
+<!--        <servlet-name>ChangeHttpServlet</servlet-name>-->
+<!--        <servlet-class>com.yuan.spring.config.ChangeHttpServlet</servlet-class>-->
+<!--    </servlet>-->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>ChangeHttpServlet</servlet-name>-->
+<!--        <url-pattern>/changeHttpServlet</url-pattern>-->
+<!--    </servlet-mapping>-->
 
-    <!--cookie 测试-->
-    <servlet>
-        <servlet-name>cookieServlet</servlet-name>
-        <servlet-class>com.yuan.spring.config.CookieServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>cookieServlet</servlet-name>
-        <url-pattern>/cookieServlet</url-pattern>
-    </servlet-mapping>
+<!--    &lt;!&ndash;cookie 测试&ndash;&gt;-->
+<!--    <servlet>-->
+<!--        <servlet-name>cookieServlet</servlet-name>-->
+<!--        <servlet-class>com.yuan.spring.config.CookieServlet</servlet-class>-->
+<!--    </servlet>-->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>cookieServlet</servlet-name>-->
+<!--        <url-pattern>/cookieServlet</url-pattern>-->
+<!--    </servlet-mapping>-->
 
-    <!--session 测试-->
-    <servlet>
-        <servlet-name>sessionServlet</servlet-name>
-        <servlet-class>com.yuan.spring.config.SessionServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>sessionServlet</servlet-name>
-        <url-pattern>/sessionServlet</url-pattern>
-    </servlet-mapping>
+<!--    &lt;!&ndash;session 测试&ndash;&gt;-->
+<!--    <servlet>-->
+<!--        <servlet-name>sessionServlet</servlet-name>-->
+<!--        <servlet-class>com.yuan.spring.config.SessionServlet</servlet-class>-->
+<!--    </servlet>-->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>sessionServlet</servlet-name>-->
+<!--        <url-pattern>/sessionServlet</url-pattern>-->
+<!--    </servlet-mapping>-->
 
     <!--encodingFilter-->
     <filter>
