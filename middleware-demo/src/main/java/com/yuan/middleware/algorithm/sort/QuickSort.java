@@ -32,14 +32,14 @@ public class QuickSort {
         if (leftBound >= rightBound) {
             return;
         }
-        int mid = portition(arr, leftBound, rightBound);
+        int mid = partition(arr, leftBound, rightBound);
         //需要注意边界
         sort(arr, leftBound, mid - 1);
         sort(arr, mid + 1, rightBound);
 
     }
 
-    private static int portition(int arr[], int leftBound, int rightBound) {
+    private static int partition(int arr[], int leftBound, int rightBound) {
         // 从数组最后一位(枢纽)开始，在数组首查找比枢纽大的元素left，在数组尾查找比枢纽小的元素right，
         // 将他们交换，直至left>right,将left与rightBound交换，以left为中心分割数组，再次执行之前的操作，直到分割只有一个元素。
         int pivot = arr[rightBound];

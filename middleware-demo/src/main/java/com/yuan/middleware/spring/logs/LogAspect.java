@@ -27,7 +27,7 @@ public class LogAspect {
 
     private Logger logger = LoggerFactory.getLogger(LogAspect.class);
 
-    ThreadLocal<Long> startTime = new ThreadLocal<Long>();
+    private static final ThreadLocal<Long> startTime = new ThreadLocal<>();
 
     @Pointcut("execution(public * com.yuan.middleware.spring.controller.*.*(..))")
     public void logPointCut() {
@@ -86,6 +86,15 @@ public class LogAspect {
     public void doAfterReturning(Object object) {
         logger.info("RESPONSE TIME: " + (System.currentTimeMillis() - startTime.get()) + "ms");
         logger.info("RESPONSE BODY: " + object);
+        /**
+         *  https://www.nowcoder.com/discuss/69456
+         *  移除本次请求的key，value，防止出现由ThreadLocal导致的内存泄露,但是这里的threadLocal是私有静态的，引用会随着方法区的类信息一起生存，
+         *  而且这个类经常被使用，极低的概率会出现类的卸载，因此也不大可能出现强引用失效，导致内部弱引用回收key，key为null,获取不到对应value，
+         *  导致value无法被回收，产生内存泄露。
+         *  查看源码会发现，ThreadLocal的get、set和remove方法都实现了对所有key为null的value的清除，但仍可能会发生内存泄露，
+         *  因为可能使用了ThreadLocal的get或set方法后发生GC，此后不调用get、set或remove方法，为null的value就不会被清除。
+         */
+        startTime.remove();
     }
 
     /**
