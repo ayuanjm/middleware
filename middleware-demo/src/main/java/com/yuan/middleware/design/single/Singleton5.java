@@ -38,7 +38,7 @@ public class Singleton5 {
      */
     public static Singleton5 getInstance() {
         if (instance == null) {
-            synchronized (instance) {
+            synchronized (Singleton5.class) {
                 if (instance == null) {
                     try {
                         Thread.sleep(100);
@@ -50,5 +50,9 @@ public class Singleton5 {
             }
         }
         return instance;
+    }
+
+    public static void main(String[] args) {
+        Singleton5.getInstance();
     }
 }

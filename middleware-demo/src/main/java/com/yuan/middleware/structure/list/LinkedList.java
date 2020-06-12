@@ -1,6 +1,7 @@
 package com.yuan.middleware.structure.list;
 
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -81,7 +82,7 @@ public class LinkedList<E> implements List<E> {
 
             //:::将新增节点插入 当前节点和当前节点的左节点之间
             this.left.right = node;
-            this.left = node;
+            this.right.left = node;
         }
 
         /**
@@ -96,7 +97,7 @@ public class LinkedList<E> implements List<E> {
 
             //:::将新增节点插入 当前节点和当前节点的左节点之间
             node.right.left = node;
-            node.right = node;
+            node.left.right = node;
         }
 
         /**
