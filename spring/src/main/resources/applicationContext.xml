@@ -12,7 +12,7 @@
 		http://www.springframework.org/schema/tx
 		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
     <!-- 自动扫描 -->
-    <!-- 扫描注解类，并排除过滤 Controller -->
+    <!-- 扫描注解类，并排除过滤 Controller (父子容器问题必须排除springMvc中的Controller，否则会覆盖bean)-->
     <context:component-scan base-package="com.yuan">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
