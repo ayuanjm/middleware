@@ -38,13 +38,12 @@ class Solution {
         while (cur.next != null && cur.next.next != null) {
             //如果连续元素相等
             if (cur.next.val == cur.next.next.val) {
-                ListNode temp = cur.next;
-                //11123：最终temp会等于相等最后一个元素值(1)
-                while (temp != null && temp.next != null && temp.next.val == temp.val) {
-                    temp = temp.next;
+                //11123：最终跳出循环时cur.next必定是连续相等元素的最后一个值(1)
+                while (cur.next != null && cur.next.next != null && cur.next.next.val == cur.next.val) {
+                    cur.next = cur.next.next;
                 }
-                //当前节点的next指向去除相等值后的第一个值(2),等同于将相等值从链表移除，
-                cur.next = temp.next;
+                //cur.next = cur.next.next 连续相等元素的最后一个值的next，也就是去除相等后的第一个值
+                cur.next = cur.next.next;
             } else {
                 //哨兵cur引用指向最新不等元素(2)
                 cur = cur.next;
