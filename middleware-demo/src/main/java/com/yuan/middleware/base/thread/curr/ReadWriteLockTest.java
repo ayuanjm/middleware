@@ -23,7 +23,7 @@ public class ReadWriteLockTest {
     public static void read(Lock lock) {
         try {
             lock.lock();
-            Thread.sleep(1000);
+            Thread.sleep(10000);
             System.out.println("read over!");
             //模拟读取操作
         } catch (InterruptedException e) {
