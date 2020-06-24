@@ -21,13 +21,23 @@
 //2.  1 阶 + 2 阶
 //3.  2 阶 + 1 阶
 // 
-// Related Topics 动态规划
+// Related Topics 动态规划 f(n) = f(n-1)+f(n-2)
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int climbStairs(int n) {
-
+        if (n == 1 || n == 2) {
+            return n;
+        }
+        //通过数组把每一步的val缓存起来，这样f(n) = f(n-1)+f(n-2)比较明确
+        int[] sum = new int[n + 1];
+        sum[1] = 1;
+        sum[2] = 2;
+        for (int i = 3; i <= n; i++) {
+            sum[i] = sum[i - 1] + sum[i - 2];
+        }
+        return sum[n];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
