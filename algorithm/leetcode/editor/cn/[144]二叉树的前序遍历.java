@@ -40,27 +40,33 @@ class Solution {
         if (root == null) {
             return list;
         }
-        //使用栈的先进后出策略保存遍历记录
         Stack<TreeNode> stack = new Stack<>();
-        //由于先序遍历访问顺序为：中左右，先输出中节点，再先序遍历左节点，再先序号遍历右节点
-        //先左后右，因此加入栈的顺序为，先push右，后push左，弹栈时才会是先左后右。
-        stack.push(root);
-        while (!stack.isEmpty()) {
-            // 第一次循环弹出中节点，判断中节点是否有左右节点
-            // 下一次循环就是先序遍历左节点
-            // 后面就是先序遍历右节点
-            TreeNode node = stack.pop();
-            if (node != null) {
-                list.add(node.val);
-                if (node.right != null) {
-                    stack.push(node.right);
-                }
-                if (node.left != null) {
-                    stack.push(node.left);
-                }
+        //首先访问根节点的左侧链，将右节点入栈
+        visitLeftBranch(root, list, stack);
+        while (true) {
+            if (stack.isEmpty()) {
+                break;
+            } else {
+                //将栈中的右节点出栈，以右节点为根节点，再次访问根节点的左侧链，将它的右节点入栈
+                visitLeftBranch(stack.pop(), list, stack);
             }
         }
         return list;
+    }
+
+    /**
+     * 访问根节点的左侧链，将右节点入栈
+     * @param root
+     * @param list
+     * @param stack
+     */
+    private void visitLeftBranch(TreeNode root, List list, Stack<TreeNode> stack) {
+        while (root != null) {
+            list.add(root.val);
+            //右节点可能为null，但是在pop时不影响流程
+            stack.push(root.right);
+            root = root.left;
+        }
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -81,6 +87,35 @@ class Solution {
 //        }
 //        if (root.right != null) {
 //            getIntegerList(root.right, list);
+//        }
+//        return list;
+//    }
+//}
+//class Solution {
+//    public List<Integer> preorderTraversal(TreeNode root) {
+//        List list = new LinkedList<Integer>();
+//        if (root == null) {
+//            return list;
+//        }
+//        //使用栈的先进后出策略保存遍历记录
+//        Stack<TreeNode> stack = new Stack<>();
+//        //由于先序遍历访问顺序为：中左右，先输出中节点，再先序遍历左节点，再先序号遍历右节点
+//        //先左后右，因此加入栈的顺序为，先push右，后push左，弹栈时才会是先左后右。
+//        stack.push(root);
+//        while (!stack.isEmpty()) {
+//            // 第一次循环弹出中节点，判断中节点是否有左右节点
+//            // 下一次循环就是先序遍历左节点
+//            // 后面就是先序遍历右节点
+//            TreeNode node = stack.pop();
+//            if (node != null) {
+//                list.add(node.val);
+//                if (node.right != null) {
+//                    stack.push(node.right);
+//                }
+//                if (node.left != null) {
+//                    stack.push(node.left);
+//                }
+//            }
 //        }
 //        return list;
 //    }
