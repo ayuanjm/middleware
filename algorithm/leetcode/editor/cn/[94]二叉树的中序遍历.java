@@ -34,18 +34,12 @@ class Solution {
         }
         Stack<TreeNode> stack = new Stack<>();
         visitLeftBranch(root, stack);
-        while (true) {
-            if (stack.isEmpty()) {
-                break;
-            } else {
-                //取出最左节点
-                TreeNode node = stack.pop();
-                if (node != null) {
-                    list.add(node.val);
-                    //将最左节点的右节点当作根节点，再次访问根节点的左侧链，将其加入栈中
-                    visitLeftBranch(node.right, stack);
-                }
-            }
+        while (!stack.isEmpty()) {
+            //取出最左节点
+            TreeNode node = stack.pop();
+            list.add(node.val);
+            //将最左节点的右节点当作根节点，再次访问根节点的左侧链，将其加入栈中
+            visitLeftBranch(node.right, stack);
         }
         return list;
     }

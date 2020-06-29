@@ -43,19 +43,16 @@ class Solution {
         Stack<TreeNode> stack = new Stack<>();
         //首先访问根节点的左侧链，将右节点入栈
         visitLeftBranch(root, list, stack);
-        while (true) {
-            if (stack.isEmpty()) {
-                break;
-            } else {
-                //将栈中的右节点出栈，以右节点为根节点，再次访问根节点的左侧链，将它的右节点入栈
-                visitLeftBranch(stack.pop(), list, stack);
-            }
+        while (!stack.isEmpty()) {
+            //将栈中的右节点出栈，以右节点为根节点，再次访问根节点的左侧链，将它的右节点入栈
+            visitLeftBranch(stack.pop(), list, stack);
         }
         return list;
     }
 
     /**
      * 访问根节点的左侧链，将右节点入栈
+     *
      * @param root
      * @param list
      * @param stack
