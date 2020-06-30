@@ -29,13 +29,13 @@ class Solution {
         while (left < right) {
             int middle = (left + right) / 2;
             if (nums[middle] < nums[right]) {
-                // middle在最小值的右边或者是最小值
-                right = middle;
                 //判断middle是不是最小值，避免已经找到最小值了，还在二分查找。注意middle - 1下标越界。
                 if (middle - 1 > 0 && nums[middle] < nums[middle - 1] && nums[middle] < nums[middle + 1]) {
                     //只有最小值会比左边的小,同时比右边的大
                     return nums[middle];
                 }
+                // middle在最小值的右边或者是最小值，right不能等于middle-1，因为如果-1可能就是最小值了，但是又去进行下次比较，导致错过最小值
+                right = middle;
             } else {
                 // middle在最小值的左边，肯定不是最小值
                 left = middle + 1;
