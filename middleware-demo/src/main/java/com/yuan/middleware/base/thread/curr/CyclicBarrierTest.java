@@ -17,7 +17,7 @@ public class CyclicBarrierTest {
         //每5个await后才会执行一次 barrierAction：满人，发车,没有满5就一直等待，刚好是5的倍数就会停止。
         CyclicBarrier cyclicBarrier = new CyclicBarrier(5,
                 () -> System.out.println("满人，发车"));
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             new Thread(() -> {
                 try {
                     System.out.println(Thread.currentThread().getName()+"start");

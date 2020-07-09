@@ -583,6 +583,21 @@ public class TreeMap<K, V> implements Map<K, V> {
 //        System.out.println(root);
     }
 
+    /**
+     * 递归遍历二叉树
+     *
+     * @param root
+     */
+    public void traversal(EntryNode<K, V> root) {
+        if (root == null) {
+            return;
+        }
+//        System.out.println(root);//先序
+        traversal(root.left);
+//        System.out.println(root);//中序
+        traversal(root.right);
+//        System.out.println(root);//后序
+    }
 
     public static void main(String[] args) {
         TreeMap treeMap = new TreeMap();

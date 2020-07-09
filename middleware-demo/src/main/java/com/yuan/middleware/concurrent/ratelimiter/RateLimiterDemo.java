@@ -65,7 +65,7 @@ public class RateLimiterDemo {
 
     private static void rateTryAcquire() {
         //一秒产生10个令牌
-        RateLimiter rateLimiter = RateLimiter.create(10);
+        RateLimiter rateLimiter = RateLimiter.create(20);
         ThreadPoolExecutor executor = new ThreadPoolExecutor
                 (3,
                         30,
