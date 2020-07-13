@@ -34,3 +34,7 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     jdbc-type-for-null: 'null'
     cacheEnabled: false
+
+idworder:
+  worker-id: ${random.int[1,31]}
+  datacenter-id: ${random.int[1,31]}
