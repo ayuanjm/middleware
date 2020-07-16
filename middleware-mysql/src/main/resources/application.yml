@@ -1,0 +1,27 @@
+datasource:
+  druid:
+    master:
+      jdbc-url: jdbc:mysql://localhost:3316/cloudDB01
+      username: root
+      password: 123456Aa
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      type: com.alibaba.druid.pool.DruidDataSource
+    slave:
+      jdbc-url: jdbc:mysql://localhost:3316/cloudDB02
+      username: root
+      password: 123456Aa
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      type: com.alibaba.druid.pool.DruidDataSource
+
+
+mybatis:
+  mapper-locations:
+    - classpath:mybatis/mapper/**/*.xml                       # mapper映射文件
+  configuration:
+    #开启驼峰命名
+    map-underscore-to-camel-case: true
+    auto-mapping-behavior: partial
+    #输出日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    jdbc-type-for-null: 'null'
+    cacheEnabled: false
