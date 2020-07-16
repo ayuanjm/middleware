@@ -33,4 +33,10 @@ public class Singleton3 {
     private Singleton3(String info) {
         this.info = info;
     }
+
+    public static void main(String[] args) {
+
+        Singleton3 instance = Singleton3.INSTANCE;
+        System.out.println(instance.info);
+    }
 }

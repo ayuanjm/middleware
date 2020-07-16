@@ -1,6 +1,6 @@
 package com.yuan.middleware;
 
-import com.yuan.middleware.base.spring.even.EvenPublish;
+import com.yuan.middleware.jdk.base.spring.even.EvenPublish;
 import com.yuan.middleware.spring.service.DeptService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
