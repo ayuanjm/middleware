@@ -8,6 +8,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
 
@@ -37,16 +39,44 @@ public class HandleDatasourceAspect {
         //获取方法的注解信息
         DataSource annotation = method.getAnnotation(DataSource.class);
         if (null == annotation) {
+            //DataSource注解为null时默认使用上一次的数据源，初始化时为master
             annotation = joinPoint.getTarget().getClass().getAnnotation(DataSource.class);
         }
         if (null != annotation) {
+            //如果需要读写分离
+            dbReadWrite(method, annotation);
+            //如果只是动态切换数据源
+//            DataSourceContextHolder.switchDataSource(annotation.name());
+        }
+    }
+
+    private void dbReadWrite(Method method, DataSource annotation) {
+        String masterCount = DataSourceContextHolder.getMasterCount();
+        //说明该线程没有使用过事务，如果使用过事务则不进行数据源切换
+        if (StringUtils.isEmpty(masterCount)) {
             // 切换数据源
             DataSourceContextHolder.switchDataSource(annotation.name());
+            // 如果有事务，则事务内的sql都使用master，记录一个线程第一次使用事务的值，用来使之后的切换数据源失效
+            updateTransactional(method);
+        }
+    }
+
+    /**
+     * 有事务的就直接使用master就可以，因为事务是针对增删改的，也就是master
+     * 设置事务标识，下次不进行数据源切换。
+     *
+     * @param method
+     */
+    private void updateTransactional(Method method) {
+        Transactional transactional = method.getAnnotation(Transactional.class);
+        if (transactional != null) {
+            DataSourceContextHolder.setMasterCount();
         }
     }
 
     @After("pointcut()")
     public void afterExecute() {
         DataSourceContextHolder.clear();
+        DataSourceContextHolder.clearMasterCount();
     }
 }

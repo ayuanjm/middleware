@@ -15,8 +15,6 @@ datasource:
 
 
 mybatis:
-  mapper-locations:
-    - classpath:mybatis/mapper/**/*.xml                       # mapper映射文件
   configuration:
     #开启驼峰命名
     map-underscore-to-camel-case: true
