@@ -1,6 +1,6 @@
 package com.yuan.spring;
 
-import com.yuan.spring.service.impl.SmsServiceImpl;
+import com.yuan.spring.dynamic.DynamicDataSourceService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -10,7 +10,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class Spring {
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-        SmsServiceImpl bean = context.getBean(SmsServiceImpl.class);
-        bean.sqlSessionTest();
+        DynamicDataSourceService bean = context.getBean(DynamicDataSourceService.class);
+        bean.jdbcTemplateDynamicDataSource();
     }
 }

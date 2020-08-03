@@ -32,14 +32,14 @@
 
     <!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="driverManagerDataSource" />
-        <property name="configLocation" value="classpath:myBatisConfiguration.xml" />
+        <property name="dataSource" ref="driverManagerDataSource"/>
+        <property name="configLocation" value="classpath:myBatisConfiguration.xml"/>
         <!-- 自动扫描mapping.xml文件 -->
         <property name="mapperLocations" value="classpath:mapper/*.xml"></property>
     </bean>
     <!-- DAO接口所在包名，Spring会自动查找其下的类 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.yuan.spring.dao" />
+        <property name="basePackage" value="com.yuan.spring.dao"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
     </bean>
 
@@ -64,32 +64,57 @@
     2、告诉spring哪些方法是事务方法(事务切面按照我们的切点表达式去切入事务方法)
     -->
     <!-- aop配置 -->
-<!--    <aop:config>-->
-<!--        &lt;!&ndash; 定义切点表达式，切入哪些方法&ndash;&gt;-->
-<!--        <aop:pointcut id="txPoint" expression="execution(* com.yuan.spring.service.*.*(..))"/>-->
-<!--        &lt;!&ndash; 事务建议，事务增强 advice-ref指向事务管理器的配置&ndash;&gt;-->
-<!--&lt;!&ndash;        <aop:advisor advice-ref="myAdvice" pointcut-ref="txPoint"></aop:advisor>&ndash;&gt;-->
-<!--        &lt;!&ndash; 指定自己定义的切面用来记录日志，这个切面和事务无关&ndash;&gt;-->
-<!--        <aop:aspect ref="logAspect">-->
-<!--            <aop:around method="around" pointcut-ref="txPoint"></aop:around>-->
-<!--        </aop:aspect>-->
+    <!--    <aop:config>-->
+    <!--        &lt;!&ndash; 定义切点表达式，切入哪些方法&ndash;&gt;-->
+    <!--        <aop:pointcut id="txPoint" expression="execution(* com.yuan.spring.service.*.*(..))"/>-->
+    <!--        &lt;!&ndash; 事务建议，事务增强 advice-ref指向事务管理器的配置&ndash;&gt;-->
+    <!--&lt;!&ndash;        <aop:advisor advice-ref="myAdvice" pointcut-ref="txPoint"></aop:advisor>&ndash;&gt;-->
+    <!--        &lt;!&ndash; 指定自己定义的切面用来记录日志，这个切面和事务无关&ndash;&gt;-->
+    <!--        <aop:aspect ref="logAspect">-->
+    <!--            <aop:around method="around" pointcut-ref="txPoint"></aop:around>-->
+    <!--        </aop:aspect>-->
 
-<!--    </aop:config>-->
+    <!--    </aop:config>-->
 
-<!--    &lt;!&ndash; 基于xml的声明式事务myAdvice，必须放在aop config中的advisor且指定切点表达式，这样事务才会生效&ndash;&gt;-->
-<!--    <tx:advice id="myAdvice" transaction-manager="dataSourceTransactionManager">-->
-<!--        &lt;!&ndash; 事务属性 &ndash;&gt;-->
-<!--        <tx:attributes>-->
-<!--            &lt;!&ndash; 指明哪些方法是事务方法，切点表达式只是说，事务管理器要切入这些方法，哪些方法要加事务使用tx:method指定-->
-<!--            如果不用tx:method指定，则不会有事务,虽然事务管理器管理了所有切点表达式包含的方法都会执行TransactionAspectSupport切面方法，-->
-<!--            但是没有tx:method指定的方法最终执行源码时TransactionAspectSupport的TransactionInfo属性为无事务，不会回滚异常。-->
-<!--            &ndash;&gt;-->
-<!--            <tx:method name="get*" rollback-for="Exception"/>-->
-<!--        </tx:attributes>-->
-<!--    </tx:advice>-->
+    <!--    &lt;!&ndash; 基于xml的声明式事务myAdvice，必须放在aop config中的advisor且指定切点表达式，这样事务才会生效&ndash;&gt;-->
+    <!--    <tx:advice id="myAdvice" transaction-manager="dataSourceTransactionManager">-->
+    <!--        &lt;!&ndash; 事务属性 &ndash;&gt;-->
+    <!--        <tx:attributes>-->
+    <!--            &lt;!&ndash; 指明哪些方法是事务方法，切点表达式只是说，事务管理器要切入这些方法，哪些方法要加事务使用tx:method指定-->
+    <!--            如果不用tx:method指定，则不会有事务,虽然事务管理器管理了所有切点表达式包含的方法都会执行TransactionAspectSupport切面方法，-->
+    <!--            但是没有tx:method指定的方法最终执行源码时TransactionAspectSupport的TransactionInfo属性为无事务，不会回滚异常。-->
+    <!--            &ndash;&gt;-->
+    <!--            <tx:method name="get*" rollback-for="Exception"/>-->
+    <!--        </tx:attributes>-->
+    <!--    </tx:advice>-->
 
-<!--    &lt;!&ndash; 把我们的代理对象暴露出来,使得在一个类的内部调用自己的方法也能被事务控制，走事务切面-->
-<!--         ((ManagerServiceB) AopContext.currentProxy()).insertUser();-->
-<!--     &ndash;&gt;-->
-<!--    <aop:aspectj-autoproxy expose-proxy="true"/>-->
+    <!--    &lt;!&ndash; 把我们的代理对象暴露出来,使得在一个类的内部调用自己的方法也能被事务控制，走事务切面-->
+    <!--         ((ManagerServiceB) AopContext.currentProxy()).insertUser();-->
+    <!--     &ndash;&gt;-->
+    <!--    <aop:aspectj-autoproxy expose-proxy="true"/>-->
+
+
+    <!-- JdbcTemplate多数据源 -->
+    <bean id="db01DriverManagerDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="url" value="${db01.jdbc.url}"></property>
+        <property name="username" value="${db01.jdbc.username}"></property>
+        <property name="password" value="${db01.jdbc.password}"></property>
+    </bean>
+
+    <!-- 配置多数据源jdbcTemplate操作数据库 -->
+    <bean id="db01JdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="db01DriverManagerDataSource"></property>
+    </bean>
+
+    <bean id="db02DriverManagerDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="url" value="${db02.jdbc.url}"></property>
+        <property name="username" value="${db02.jdbc.username}"></property>
+        <property name="password" value="${db02.jdbc.password}"></property>
+    </bean>
+
+    <!-- 配置多数据源jdbcTemplate操作数据库 -->
+    <bean id="db02JdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="db02DriverManagerDataSource"></property>
+    </bean>
+
 </beans>
