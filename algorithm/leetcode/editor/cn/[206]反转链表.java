@@ -27,9 +27,9 @@ class Solution {
         ListNode newHead = null;
         while (curr != null) {
             ListNode temp = curr.next;
-            next.next = newHead;
-            newHead = next;
-            next = temp;
+            curr.next = newHead;
+            newHead = curr;
+            curr = temp;
         }
         return newHead;
     }
