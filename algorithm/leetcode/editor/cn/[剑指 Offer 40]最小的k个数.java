@@ -28,10 +28,9 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[] getLeastNumbers(int[] arr, int k) {
-//        sort(arr, 0, arr.length - 1);
-        if (k == 0) {
-            return new int[0];
-        }
+        //默认小根堆，输出后从小到大排序，queue.poll() 值为最小
+        //这里改为大根堆，从大到小排序，queue.poll()值最大，当输入k个数后再输入，与最大的比较
+        //如果比最大的小则替换，之后再次调用queue.poll()又是最大的，再次比较替换
         Queue<Integer> queue = new PriorityQueue<>((o1, o2) -> o2 - o1);
         for (int i = 0; i < arr.length; i++) {
             if (queue.size() < k) {
@@ -45,13 +44,9 @@ class Solution {
         }
         int[] temp = new int[k];
         int i = 0;
-        Iterator<Integer> iterator = queue.iterator();
-        while (iterator.hasNext()) {
-            temp[i++] = iterator.next();
+        for (int num : queue) {
+            temp[i++] = num;
         }
-//        for (int i = 0; i < k; i++) {
-//            temp[i] = arr[i];
-//        }
         return temp;
     }
 
