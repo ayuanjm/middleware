@@ -31,27 +31,13 @@ class Solution {
         ListNode newL1 = l1;
         ListNode newL2 = l2;
         int sum = 0;
-        while (newL1 != null && newL2 != null) {
-            sum += newL1.val + newL2.val;
+        while (newL1 != null || newL2 != null) {
+            sum += (newL1 != null ? newL1.val : 0) + (newL2 != null ? newL2.val : 0);
             curr.next = new ListNode(sum % 10);
             curr = curr.next;
             sum = sum / 10;
-            newL1 = newL1.next;
-            newL2 = newL2.next;
-        }
-        while (newL1 != null) {
-            sum += newL1.val;
-            curr.next = new ListNode(sum % 10);
-            curr = curr.next;
-            sum = sum / 10;
-            newL1 = newL1.next;
-        }
-        while (newL2 != null) {
-            sum += newL2.val;
-            curr.next = new ListNode(sum % 10);
-            curr = curr.next;
-            sum = sum / 10;
-            newL2 = newL2.next;
+            newL1 = newL1 != null ? newL1.next : null;
+            newL2 = newL2 != null ? newL2.next : null;
         }
         if (sum == 1) {
             curr.next = new ListNode(1);
