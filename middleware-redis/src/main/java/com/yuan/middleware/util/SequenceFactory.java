@@ -41,8 +41,18 @@ public class SequenceFactory {
             if (randNo < 0) {
                 randNo = -randNo;
             }
-            return Long.valueOf(first + String.format("%16d", randNo));
+            return Long.valueOf(first + String.format("%16d", randNo).trim());
         }
+    }
+
+    public static void main(String[] args) {
+        int first = new Random(10).nextInt(8) + 1;
+        int randNo = UUID.randomUUID().toString().hashCode();
+        if (randNo < 0) {
+            randNo = -randNo;
+        }
+        System.out.println(randNo);
+        System.out.println(Long.valueOf(first + String.format("%16d", randNo).trim()));
     }
 
 }
