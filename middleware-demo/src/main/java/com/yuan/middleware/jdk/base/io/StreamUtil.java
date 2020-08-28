@@ -47,6 +47,7 @@ public class StreamUtil {
         String s;
         while ((s = reader.readLine()) != null) {
             writer.write(s, 0, s.length());
+            //换行
             writer.newLine();
         }
         writer.flush();
@@ -123,9 +124,9 @@ public class StreamUtil {
     }
 
     public static void main(String[] args) throws IOException {
-        FileInputStream inputStream = new FileInputStream("/Users/yuan/Downloads/QUESTION_LIBRARY_wh.sql");
-        FileOutputStream outputStream = new FileOutputStream("/Users/yuan/Downloads/outputStream.sql");
+        FileInputStream inputStream = new FileInputStream("/Users/yuan/Downloads/Java综合总结.pdf");
+        FileOutputStream outputStream = new FileOutputStream("/Users/yuan/Downloads/outputStream.pdf");
 //        System.out.println(getString(inputStream));
-//        createFile(inputStream, outputStream);
+        createFile(inputStream, outputStream);
     }
 }

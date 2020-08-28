@@ -31,10 +31,12 @@ public class TreeMapTest {
         }
         System.out.println();
         //底层是包装的hashMap node节点 添加before,after节点，根据put顺序排序
+//        LinkedHashMap<Object, Object> linkedHashMap = new LinkedHashMap<>(16, 0.75F, true);
         LinkedHashMap<Object, Object> linkedHashMap = new LinkedHashMap<>();
         linkedHashMap.put(1, 2);
         linkedHashMap.put(5, 2);
         linkedHashMap.put(3, 2);
+        linkedHashMap.get(5);
         for (Object o : linkedHashMap.keySet()) {
             System.out.print(o);
         }
