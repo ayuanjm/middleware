@@ -25,7 +25,7 @@ class Solution {
         List<List<Integer>> ans = new LinkedList<>();
         //排序
         Arrays.sort(nums);
-        for (int i = 0; i < nums.length; i++) {
+        for (int i = 0; i < nums.length - 2; i++) {
             if (nums[i] > 0) {
                 return ans;
             }
@@ -35,6 +35,14 @@ class Solution {
             }
             int left = i + 1;
             int right = nums.length - 1;
+            int min = nums[i] + nums[i + 1] + nums[i + 2];
+            if (min > 0) {
+                break;
+            }
+            int max = nums[right] + nums[right - 1] + nums[right - 2];
+            if (max < 0) {
+                return ans;
+            }
             while (left < right) {
                 if (nums[i] + nums[left] + nums[right] == 0) {
                     List<Integer> curr = new LinkedList<Integer>();
