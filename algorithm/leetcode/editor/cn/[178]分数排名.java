@@ -38,4 +38,8 @@ select a.Score,
         from Scores b
         where b.Score >= a.Score) as 'Rank'
         from Scores a
-        order by a.Score desc
+        order by a.Score desc;
+
+select Score,
+dense_rank() over(order by Score desc) as 'Rank'
+from Scores;
