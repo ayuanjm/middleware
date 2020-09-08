@@ -38,7 +38,10 @@ class Solution {
                 // 左指针向右移动一格，移除一个字符
                 set.remove(s.charAt(i - 1));
             }
-            if (right >= length || set.contains(s.charAt(right))) {
+            if (right >= length){
+                return ans;
+            }
+            if (set.contains(s.charAt(right))) {
                 //存在相等长度为：right - i
                 ans = Math.max(ans, right - i);
                 continue;
