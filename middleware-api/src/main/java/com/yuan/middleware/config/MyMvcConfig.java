@@ -15,6 +15,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class MyMvcConfig extends WebMvcConfigurerAdapter {
 
     /**
+     * HandlerInterceptor里@Autowired对象为空的解决方法
+     * @return
+     */
+    @Bean
+    public RequestHandleTimeInterceptor requestHandleTimeInterceptor(){
+        return new RequestHandleTimeInterceptor();
+    }
+    /**
      * 所有的WebMvcConfigurerAdapter组件都会一起起作用
      * 将组件注册到容器中
      *
@@ -36,7 +44,7 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
             //注册拦截器：相当于<mvc:interceptors>
             @Override
             public void addInterceptors(InterceptorRegistry registry) {
-                registry.addInterceptor(new RequestHandleTimeInterceptor()).addPathPatterns("/**")
+                registry.addInterceptor(requestHandleTimeInterceptor()).addPathPatterns("/**")
                         .excludePathPatterns("/webjars/**");
             }
         };

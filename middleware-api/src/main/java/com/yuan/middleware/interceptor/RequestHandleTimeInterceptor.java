@@ -1,7 +1,6 @@
 package com.yuan.middleware.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2019/12/02
  */
 @Slf4j
-@Component
 public class RequestHandleTimeInterceptor implements HandlerInterceptor {
     private static final ThreadLocal<Long> CONSUME_TIME = new ThreadLocal<>();
 

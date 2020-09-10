@@ -1,9 +1,13 @@
 package com.yuan.middleware.config;
 
+import com.yuan.middleware.interceptor.LimitFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Arrays;
 
 /**
  * @author yuan
@@ -21,10 +25,19 @@ public class ConfigurationBean {
 
     /**
      * 解决RabbitTemplate乱码
+     *
      * @return
      */
     @Bean
     Jackson2JsonMessageConverter messageConverter() {
         return new Jackson2JsonMessageConverter();
+    }
+
+    @Bean
+    public FilterRegistrationBean limitFilter() {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        registrationBean.setFilter(new LimitFilter());
+        registrationBean.setUrlPatterns(Arrays.asList("/myFilter/*"));
+        return registrationBean;
     }
 }
