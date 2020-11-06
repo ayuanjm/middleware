@@ -1,4 +1,4 @@
-package com.yuan.middleware.jdk.base.io;
+package com.yuan.middleware.jdk.base.io.stream;
 
 import java.io.*;
 
