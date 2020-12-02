@@ -1,4 +1,4 @@
-package com.yuan.middleware.jdk.design.decorator;
+package com.yuan.middleware.design.decorator;
 
 /**
  * @author yjm

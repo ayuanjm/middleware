@@ -1,4 +1,4 @@
-package com.yuan.middleware.jdk.design.proxy.dynamic.cglib;
+package com.yuan.middleware.design.proxy.dynamic.cglib;
 
 /**
  * @author yjm

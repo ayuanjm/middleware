@@ -1,4 +1,4 @@
-package com.yuan.middleware.jdk.design.proxy.dynamic.cglib;
+package com.yuan.middleware.design.proxy.dynamic.cglib;
 
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;

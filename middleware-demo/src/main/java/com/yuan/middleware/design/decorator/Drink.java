@@ -1,4 +1,4 @@
-package com.yuan.middleware.jdk.design.decorator;
+package com.yuan.middleware.design.decorator;
 
 /**
  * 对装饰器模式来说，装饰者（decorator）和被装饰者（decoratee）都实现同一个接口。

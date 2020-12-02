@@ -1,4 +1,4 @@
-package com.yuan.middleware.jdk.design.proxy.dynamic.jdk;
+package com.yuan.middleware.design.proxy.dynamic.jdk;
 
 /**
  * @author yjm

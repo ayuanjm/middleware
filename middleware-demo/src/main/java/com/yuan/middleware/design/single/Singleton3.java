@@ -1,4 +1,4 @@
-package com.yuan.middleware.jdk.design.single;
+package com.yuan.middleware.design.single;
 
 import lombok.Data;
 

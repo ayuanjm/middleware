@@ -1,4 +1,4 @@
-package com.yuan.middleware.jdk.design.proxy.dynamic.jdk;
+package com.yuan.middleware.design.proxy.dynamic.jdk;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
