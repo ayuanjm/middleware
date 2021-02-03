@@ -1,5 +1,7 @@
 package com.yuan.middleware.jdk.base.thread.interview;
 
+import com.alibaba.ttl.TransmittableThreadLocal;
+import com.alibaba.ttl.threadpool.TtlExecutors;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.TimeUnit;
@@ -15,6 +17,7 @@ public class ThreadLocalTest {
 //    public static final ThreadLocal<> threadLocal = new InheritableThreadLocal();
 
     public static final ThreadLocal<ThreadLocalTest> threadLocal = new InheritableThreadLocal();
+    public static final ThreadLocal<ThreadLocalTest> transmittableThreadLocal = new TransmittableThreadLocal<>();
 
     /**
      * public class Thread implements Runnable {

@@ -15,22 +15,31 @@ import java.net.URL;
  */
 public class StreamUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(StreamUtil.class);
+
     /**
      * 从输入流中获取字符串
      */
-    public static String getString(InputStream is) throws IOException {
+    public static String getString(InputStream is) {
         StringBuffer sb = new StringBuffer();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        String line;
+        BufferedReader reader = null;
         try {
+            reader = new BufferedReader(new InputStreamReader(is));
+            String line;
             while (((line = reader.readLine()) != null)) {
                 sb.append(line);
             }
         } catch (IOException e) {
             LOGGER.error("get string fail", e);
             throw new RuntimeException(e);
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        reader.close();
         return sb.toString();
     }
 
@@ -41,71 +50,118 @@ public class StreamUtil {
      * @param outputStream
      * @throws IOException
      */
-    public static void createFile(InputStream inputStream, OutputStream outputStream) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
-        String s;
-        while ((s = reader.readLine()) != null) {
-            writer.write(s, 0, s.length());
-            //换行
-            writer.newLine();
+    public static void createFile(InputStream inputStream, OutputStream outputStream) {
+        BufferedReader reader = null;
+        BufferedWriter writer = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+            writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+            String s;
+            while ((s = reader.readLine()) != null) {
+                writer.write(s, 0, s.length());
+                //换行
+                writer.newLine();
+            }
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (writer != null) {
+                    writer.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        writer.flush();
-        writer.close();
-        reader.close();
-
     }
 
-    public static byte[] getUrlFileData(String fileUrl) throws IOException {
-        URL url = new URL(fileUrl);
-        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
-        httpConn.connect();
-        InputStream cin = httpConn.getInputStream();
-        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int len = 0;
-        while ((len = cin.read(buffer)) != -1) {
-            outStream.write(buffer, 0, len);
+    public static byte[] getUrlFileData(String fileUrl) {
+        InputStream cin = null;
+        ByteArrayOutputStream outStream = null;
+        byte[] fileData = new byte[0];
+        try {
+            URL url = new URL(fileUrl);
+            HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+            httpConn.connect();
+            cin = httpConn.getInputStream();
+            outStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = cin.read(buffer)) != -1) {
+                outStream.write(buffer, 0, len);
+            }
+            fileData = outStream.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cin != null) {
+                    cin.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (outStream != null) {
+                    outStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        cin.close();
-        byte[] fileData = outStream.toByteArray();
-        outStream.close();
+
+
         return fileData;
     }
 
     /**
      * 读取url内容
+     *
      * @param savePath 需要保存的路径
-     * @param urlPath url地址
-     * @throws IOException
+     * @param urlPath  url地址
      */
-    private static void urlInputStream(String savePath, String urlPath) throws IOException {
-        //使用File类创建一个要操作的文件路径
-        File file = new File(savePath);
-        //可以创建url实例
-        URL url = new URL(urlPath);
-        //字节输入流
-        InputStream inputStream = url.openStream();
+    private static void urlInputStream(String savePath, String urlPath) {
+        BufferedReader br = null;
+        BufferedWriter bw = null;
+        try {
+            //使用File类创建一个要操作的文件路径
+            File file = new File(savePath);
+            //可以创建url实例
+            URL url = new URL(urlPath);
+            //字节输入流
+            InputStream inputStream = url.openStream();
 
-        //字节流转字符流
-        InputStreamReader isr = new InputStreamReader(inputStream, "UTF-8");
-        //再转缓冲流  提高读取效率
-        BufferedReader br = new BufferedReader(isr);
-        //文件输出流
-        OutputStream output = new FileOutputStream(file);
-        //字符缓冲流输出转化流
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(output));
-        //使用char 数组传输    -----字节流byte数组
-        char[] chs = new char[1024];
-        //标记
-        int len;
-        // read() 方法，读取输入流的下一个字节，返回一个0-255之间的int类型整数。如果到达流的末端，返回-1
-        while ((len = br.read(chs)) != -1) {
-            //清除缓存
-            bw.write(chs, 0, len);
-            bw.flush();
+            //字节流转字符流
+            InputStreamReader isr = new InputStreamReader(inputStream, "UTF-8");
+            //再转缓冲流  提高读取效率
+            br = new BufferedReader(isr);
+            //文件输出流
+            OutputStream output = new FileOutputStream(file);
+            //字符缓冲流输出转化流
+            bw = new BufferedWriter(new OutputStreamWriter(output));
+            //使用char 数组传输    -----字节流byte数组
+            char[] chs = new char[1024];
+            //标记
+            int len;
+            // read() 方法，读取输入流的下一个字节，返回一个0-255之间的int类型整数。如果到达流的末端，返回-1
+            while ((len = br.read(chs)) != -1) {
+                //清除缓存
+                bw.write(chs, 0, len);
+                bw.flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            close(bw, br);
         }
-        close(bw, br);
     }
 
     /**
