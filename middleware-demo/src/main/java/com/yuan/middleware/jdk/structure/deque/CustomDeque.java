@@ -5,7 +5,7 @@ import java.util.Iterator;
 /**
  * 双端队列 ADT接口
  */
-public interface Deque<E> {
+public interface CustomDeque<E> {
 
     /**
      * 头部元素插入

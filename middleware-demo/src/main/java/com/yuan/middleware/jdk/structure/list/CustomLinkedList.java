@@ -16,7 +16,7 @@ import java.util.Iterator;
  *
  * @author yuan
  */
-public class LinkedList<E> implements List<E> {
+public class CustomLinkedList<E> implements List<E> {
     /**
      * 链表 头部哨兵节点
      */
@@ -30,7 +30,7 @@ public class LinkedList<E> implements List<E> {
      */
     private int size;
 
-    public LinkedList() {
+    public CustomLinkedList() {
         this.first = new Node<>();
         this.last = new Node<>();
 
@@ -401,7 +401,7 @@ public class LinkedList<E> implements List<E> {
          * 迭代器 下一个节点
          * 初始化指向 第一个节点(不是首部节点)
          */
-        private Node<E> nextNode = LinkedList.this.first.right;
+        private Node<E> nextNode = CustomLinkedList.this.first.right;
         /**
          * 最近一次迭代返回的数据
          */
@@ -410,7 +410,7 @@ public class LinkedList<E> implements List<E> {
         @Override
         public boolean hasNext() {
             //判断下一个节点 是否是 尾部哨兵节点
-            return nextNode != LinkedList.this.last;
+            return nextNode != CustomLinkedList.this.last;
         }
 
         @Override

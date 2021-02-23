@@ -38,3 +38,10 @@ mybatis:
 idworder:
   worker-id: ${random.int[1,31]}
   datacenter-id: ${random.int[1,31]}
+
+logging:
+  pattern:
+    #日志格式，%X{traceId}会取MDC中key为traceId的值
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) - %clr([%t]){faint} %X{traceId} %clr(%logger{39}){cyan} %clr(:){faint} %m%n%wEx"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} %5p - [%t] %X{traceId} %logger{39} : %m%n%wEx"
+

@@ -6,7 +6,7 @@ import java.util.Iterator;
  * 栈ADT 接口定义
  * 先进后出(First Input Last Output)
  */
-public interface Stack<E> {
+public interface CustomStack<E> {
 
     /**
      * 将一个元素 加入栈顶

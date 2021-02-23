@@ -8,7 +8,7 @@ import java.util.Iterator;
  * @author yuan
  * 向量栈
  */
-public class VectorStack<E> implements Stack<E> {
+public class VectorStack<E> implements CustomStack<E> {
     /**
      * 内部向量
      */

@@ -10,7 +10,7 @@ import java.util.Objects;
  * @param <K>
  * @param <V>
  */
-public class TreeMap<K, V> implements Map<K, V> {
+public class CustomTreeMap<K, V> implements Map<K, V> {
     /**
      * 根节点
      */
@@ -29,14 +29,14 @@ public class TreeMap<K, V> implements Map<K, V> {
     /**
      * 默认构造函数
      */
-    public TreeMap() {
+    public CustomTreeMap() {
         this.comparator = null;
     }
 
     /**
      * 指定了比较器的构造函数
      */
-    public TreeMap(Comparator<? super K> comparator) {
+    public CustomTreeMap(Comparator<? super K> comparator) {
         this.comparator = comparator;
     }
 
@@ -519,7 +519,7 @@ public class TreeMap<K, V> implements Map<K, V> {
 
         private Itr() {
             //初始化时，nextNode指向第一个节点
-            this.nextNode = TreeMap.this.getFirstNode();
+            this.nextNode = CustomTreeMap.this.getFirstNode();
         }
 
         @Override
@@ -531,7 +531,7 @@ public class TreeMap<K, V> implements Map<K, V> {
         public Map.EntryNode<K, V> next() {
             this.currentNode = this.nextNode;
             //采用中序遍历迭代算法
-            this.nextNode = TreeMap.this.getSuccessor(this.nextNode);
+            this.nextNode = CustomTreeMap.this.getSuccessor(this.nextNode);
             return currentNode;
         }
 
@@ -600,7 +600,7 @@ public class TreeMap<K, V> implements Map<K, V> {
     }
 
     public static void main(String[] args) {
-        TreeMap treeMap = new TreeMap();
+        CustomTreeMap treeMap = new CustomTreeMap();
         treeMap.put(12, 12);
         for (int i = 8; i < 15; i++) {
             treeMap.put(i, i);

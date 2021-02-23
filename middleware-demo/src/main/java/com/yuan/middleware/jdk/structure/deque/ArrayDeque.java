@@ -9,7 +9,7 @@ import java.util.Iterator;
  *
  * @author yuan
  */
-public class ArrayDeque<E> implements Deque<E> {
+public class ArrayDeque<E> implements CustomDeque<E> {
     /**
      * 内部封装的数组
      */

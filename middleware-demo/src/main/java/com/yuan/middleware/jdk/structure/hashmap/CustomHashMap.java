@@ -13,7 +13,7 @@ import java.util.Iterator;
  *
  * @author yuan
  */
-public class HashMap<K, V> implements Map<K, V> {
+public class CustomHashMap<K, V> implements Map<K, V> {
     /**
      * 内部数组
      */
@@ -51,7 +51,7 @@ public class HashMap<K, V> implements Map<K, V> {
      * 默认构造方法
      */
     @SuppressWarnings("unchecked")
-    public HashMap() {
+    public CustomHashMap() {
         this.size = 0;
         this.loadFactor = DEFAULT_LOAD_FACTOR;
         elements = new EntryNode[DEFAULT_CAPACITY];
@@ -63,7 +63,7 @@ public class HashMap<K, V> implements Map<K, V> {
      * @param capacity 指定的初始容量
      */
     @SuppressWarnings("unchecked")
-    public HashMap(int capacity) {
+    public CustomHashMap(int capacity) {
         this.size = 0;
         this.loadFactor = DEFAULT_LOAD_FACTOR;
         elements = new EntryNode[capacity];
@@ -76,7 +76,7 @@ public class HashMap<K, V> implements Map<K, V> {
      * @param loadFactor 指定的负载因子
      */
     @SuppressWarnings("unchecked")
-    public HashMap(int capacity, int loadFactor) {
+    public CustomHashMap(int capacity, int loadFactor) {
         this.size = 0;
         this.loadFactor = loadFactor;
         elements = new EntryNode[capacity];
@@ -530,17 +530,17 @@ public class HashMap<K, V> implements Map<K, V> {
          */
         private Itr() {
             //:::如果当前哈希表为空，直接返回
-            if (HashMap.this.isEmpty()) {
+            if (CustomHashMap.this.isEmpty()) {
                 return;
             }
             //:::在构造方法中，将迭代器下标移动到第一个有效的节点上
 
             //:::遍历内部数组，找到第一个不为空的数组插槽slot
-            for (int i = 0; i < HashMap.this.elements.length; i++) {
+            for (int i = 0; i < CustomHashMap.this.elements.length; i++) {
                 //:::设置当前index
                 this.currentIndex = i;
 
-                EntryNode<K, V> firstEntryNode = HashMap.this.elements[i];
+                EntryNode<K, V> firstEntryNode = CustomHashMap.this.elements[i];
                 //:::找到了第一个不为空的插槽slot
                 if (firstEntryNode != null) {
                     //:::nextNode = 当前插槽第一个节点
@@ -568,8 +568,8 @@ public class HashMap<K, V> implements Map<K, V> {
             if (nextNode == null) {
                 //当前下标自增
                 currentIndex++;
-                for (; currentIndex < HashMap.this.elements.length; currentIndex++) {
-                    EntryNode<K, V> firstEntryNode = HashMap.this.elements[currentIndex];
+                for (; currentIndex < CustomHashMap.this.elements.length; currentIndex++) {
+                    EntryNode<K, V> firstEntryNode = CustomHashMap.this.elements[currentIndex];
                     //:::找到了第一个不为空的插槽slot
                     if (firstEntryNode != null) {
                         this.nextNode = firstEntryNode;
@@ -587,7 +587,7 @@ public class HashMap<K, V> implements Map<K, V> {
                 throw new RuntimeException("迭代器状态异常: 可能在一次迭代中进行了多次remove操作");
             }
             //将其从哈希表中移除
-            HashMap.this.remove(currentNode.key);
+            CustomHashMap.this.remove(currentNode.key);
             //currentNode设置为null，防止反复调用remove方法
             this.currentNode = null;
         }

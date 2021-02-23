@@ -7,7 +7,7 @@ import java.util.LinkedList;
 /**
  * 链表为基础实现的 栈结构
  */
-public class LinkedListStack<E> implements Stack<E> {
+public class LinkedListStack<E> implements CustomStack<E> {
     /**
      * 内部链表
      */
