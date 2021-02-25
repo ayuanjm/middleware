@@ -72,16 +72,9 @@ class Solution {
         int left = 0, right = arr.length - 1, pivot;
         while (left < right) {
             pivot = left + ((right - left) >> 1);
-            if (arr[pivot] > arr[pivot - 1]) {
-                left = pivot;
-            }
-            if (arr[pivot] < arr[pivot - 1]) {
-                right = pivot - 1;
-            }
             if (arr[pivot] > arr[pivot + 1]) {
                 right = pivot;
-            }
-            if (arr[pivot] < arr[pivot + 1]) {
+            } else {
                 left = pivot + 1;
             }
         }
