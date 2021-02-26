@@ -27,7 +27,7 @@ public class Solution extends VersionControl {
     public int firstBadVersion(int n) {
         int pivot, left = 1, right = n;
         while (left < right) {
-            pivot = left + ((right - left) >> 2);
+            pivot = left + ((right - left) >> 1);
             if (isBadVersion(pivot)) {
                 right = pivot;
             } else {
