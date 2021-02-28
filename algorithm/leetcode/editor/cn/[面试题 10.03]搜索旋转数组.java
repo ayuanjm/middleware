@@ -25,7 +25,7 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int search(int[] arr, int target) {
-        int left = 0, right = arr.length - 1, ans = Integer.MAX_VALUE;
+        int left = 0, right = arr.length - 1;
         while (left < right) {
             if (arr[left] == target) {
                 return left;
