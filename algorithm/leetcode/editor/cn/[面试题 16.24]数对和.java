@@ -22,28 +22,25 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public List<List<Integer>> pairSums(int[] nums, int target) {
-        List<List<Integer>> res = new ArrayList<>();
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int num : nums)
-            map.put(num, map.getOrDefault(num, 0) + 1);
-        for (int num1 : map.keySet()) {
-            int num2 = target - num1;
-            //能够组成数对
-            if (map.containsKey(num2) && map.get(num2) > 0) {
-                //组成数对的个数
-                int count = 0;
-                if (num1 == num2)
-                    count = map.get(num1) / 2;
-                else
-                    count = Math.min(map.get(num1), map.get(num2));
-                //添加进列表
-                for (int i = 0; i < count; i++)
-                    res.add(Arrays.asList(num1, num2));
-                map.put(num1, 0);
-                map.put(num2, 0);
+        List<List<Integer>> ans = new ArrayList<>();
+        Arrays.sort(nums);
+        int left = 0;
+        int right = nums.length - 1;
+        while (left < right) {
+            if (nums[left] + nums[right] == target) {
+                ans.add(Arrays.asList(nums[left], nums[right]));
+                left++;
+                right--;
             }
+            while (left < right && nums[left] + nums[right] < target) {
+                left++;
+            }
+            while (left < right && nums[left] + nums[right] > target) {
+                right--;
+            }
+
         }
-        return res;
+        return ans;
     }
 }
 
