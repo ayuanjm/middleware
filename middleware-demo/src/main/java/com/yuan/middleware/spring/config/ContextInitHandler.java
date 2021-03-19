@@ -12,6 +12,6 @@ public class ContextInitHandler implements ApplicationListener<ContextRefreshedE
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        System.out.println("ContextInitHandler:" + contextRefreshedEvent.getSource());
+        System.out.println("【ContextInitHandler】:" + contextRefreshedEvent.getSource());
     }
 }

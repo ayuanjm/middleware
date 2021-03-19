@@ -2,9 +2,6 @@ package com.yuan.middleware.jdk.base.thread.markword;
 
 import lombok.SneakyThrows;
 import org.openjdk.jol.info.ClassLayout;
-import sun.misc.Unsafe;
-
-import java.lang.reflect.Field;
 
 /**
  * AtomicInteger CAS
@@ -23,6 +20,10 @@ import java.lang.reflect.Field;
  */
 public class TestAtomicInteger {
     short i = 10;
+    /**
+     * 计算出来的只是指针的大小，不包括具体堆内存中的大小
+     */
+    byte[] array = new byte[1024];
 
     /**
      * 对象的创建包含3个步骤：为对象分配内存空间、执行构造方法、将对象的内存地址赋给引用。
@@ -45,25 +46,25 @@ public class TestAtomicInteger {
     public static void main(String[] args) {
         TestAtomicInteger testSync = new TestAtomicInteger();
         System.out.println(ClassLayout.parseInstance(testSync).toPrintable());
-        Field unsafeField = Unsafe.class.getDeclaredField("theUnsafe");
-        unsafeField.setAccessible(true);
-        Field i = testSync.getClass().getDeclaredField("i");
-        //获取指定对象的Field字段的值,Unsafe类需要通过反射才能拿到实例对象,构造方法私有
-        Unsafe unsafe = (Unsafe) unsafeField.get(Unsafe.class);
-        /**
-         * (64位机器)属性i在对象testSync内存中的地址偏移量为12，因为对象头占了12个字节，Mark Word 8字节，类型指针 4字节(jvm开启压缩)
-         */
-        long offset = unsafe.objectFieldOffset(i);
-        System.out.println(offset);
-        /**
-         * var1 对象
-         * var2 对象内存偏移量
-         * var3 对象内存偏移量位置的期待值
-         * var4 期待值和内存偏移量相等后 修改后的值
-         * 该操作通过CPU的cmpxchg指令完成 是原子性的(new AtomicInteger().getAndIncrement();底层使用的就是CAS)
-         */
-        boolean success = unsafe.compareAndSwapInt(testSync, offset, 1, 2);
-        System.out.println(success);
-        System.out.println(testSync.i);
+//        Field unsafeField = Unsafe.class.getDeclaredField("theUnsafe");
+//        unsafeField.setAccessible(true);
+//        Field i = testSync.getClass().getDeclaredField("i");
+//        //获取指定对象的Field字段的值,Unsafe类需要通过反射才能拿到实例对象,构造方法私有
+//        Unsafe unsafe = (Unsafe) unsafeField.get(Unsafe.class);
+//        /**
+//         * (64位机器)属性i在对象testSync内存中的地址偏移量为12，因为对象头占了12个字节，Mark Word 8字节，类型指针 4字节(jvm开启压缩)
+//         */
+//        long offset = unsafe.objectFieldOffset(i);
+//        System.out.println(offset);
+//        /**
+//         * var1 对象
+//         * var2 对象内存偏移量
+//         * var3 对象内存偏移量位置的期待值
+//         * var4 期待值和内存偏移量相等后 修改后的值
+//         * 该操作通过CPU的cmpxchg指令完成 是原子性的(new AtomicInteger().getAndIncrement();底层使用的就是CAS)
+//         */
+//        boolean success = unsafe.compareAndSwapInt(testSync, offset, 1, 2);
+//        System.out.println(success);
+//        System.out.println(testSync.i);
     }
 }

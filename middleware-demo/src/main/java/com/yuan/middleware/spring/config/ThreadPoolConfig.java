@@ -1,6 +1,7 @@
 
 package com.yuan.middleware.spring.config;
 
+import cn.hutool.core.thread.NamedThreadFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -29,7 +30,7 @@ public class ThreadPoolConfig {
                 // 保存等待执行的任务,基于数组结构的有界阻塞队列长度为 10
                 new ArrayBlockingQueue<>(3),
                 // 设置创建线程的工厂
-                Executors.defaultThreadFactory(),
+                new NamedThreadFactory("yuan-thread-", false),
                 // 线程池的拒绝策略 用调用者所在的线程来执行任务
                 new ThreadPoolExecutor.CallerRunsPolicy()
         );

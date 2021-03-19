@@ -1,9 +1,12 @@
-package com.yuan.middleware.jdk.base.spring.even;
+package com.yuan.middleware.spring.event;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * 事件监听
@@ -22,9 +25,12 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class EvenListener implements ApplicationListener<EvenSource> {
+    @SneakyThrows
     @Async("executor_yuan")
     @Override
     public void onApplicationEvent(EvenSource evenSource) {
         System.out.println(Thread.currentThread().getName() + ":EvenListener监听消息" + evenSource.getMessage());
+        TimeUnit.MINUTES.sleep(1);
+        System.out.println("listener end...");
     }
 }

@@ -1,7 +1,9 @@
 package com.yuan.middleware.spring.dao;
 
 import com.yuan.middleware.spring.entity.MarketActivity;
+import org.mapstruct.Mapper;
 
+@Mapper
 public interface MarketActivityMapper {
     int deleteByPrimaryKey(Long id);
 

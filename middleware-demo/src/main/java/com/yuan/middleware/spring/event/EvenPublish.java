@@ -1,4 +1,4 @@
-package com.yuan.middleware.jdk.base.spring.even;
+package com.yuan.middleware.spring.event;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;

@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Component
 public class ContextClosedHandler implements ApplicationListener<ContextClosedEvent> {
-    private static final int WAIT_TIME = 3;
+    private static final int WAIT_TIME = 10;
 
     @Resource
     private ThreadPoolTaskScheduler scheduler;
@@ -32,16 +32,17 @@ public class ContextClosedHandler implements ApplicationListener<ContextClosedEv
 
     @Override
     public void onApplicationEvent(ContextClosedEvent contextClosedEvent) {
-        System.out.println("ContextClosedHandler:" + contextClosedEvent.getSource());
+        System.out.println("【ContextClosedHandler】 start:" + contextClosedEvent.getSource());
         scheduler.execute(() -> {
             try {
-                Thread.sleep(10000);
+                Thread.sleep(50000);
+                System.out.println("【ContextClosedHandler】sleep end");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println("redis value:" + redisTemplate.boundValueOps("k").increment());
+//            System.out.println("redis value:" + redisTemplate.boundValueOps("k").increment());
         });
-        System.out.println("----------");
+        System.out.println("【ContextClosedHandler】 end ----------");
         shutdownAndAwaitTermination(scheduler.getScheduledThreadPoolExecutor());
     }
 
