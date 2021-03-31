@@ -21,15 +21,12 @@ import java.util.Map;
 class Solution {
     public int[] twoSum(int[] nums, int target) {
         Map<Integer, Integer> map = new HashMap<>(16);
-        //用数组值作为map的key，由于(每种输入只会对应一个答案)不会出现重复元素，所以不存在key被覆盖的情况
-        for (int i = 0; i < nums.length; i++) {
-            map.put(nums[i], i);
-        }
         for (int i = 0; i < nums.length; i++) {
             int offset = target - nums[i];
             if (map.containsKey(offset) && map.get(offset) != i) {
                 return new int[]{i, map.get(offset)};
             }
+            map.put(nums[i], i);
         }
         throw new IllegalArgumentException("No two sum solution");
     }
