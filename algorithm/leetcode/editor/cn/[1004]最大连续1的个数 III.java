@@ -42,14 +42,16 @@ class Solution {
         int ans = 0;
         while (right < n) {
             if (A[right++] == 0) {
-                zeroCount++;
+                ++zeroCount;
+            }
+            if (zeroCount <= K) {
+                ans = (right - left) > ans ? (right - left) : ans;
             }
             while (zeroCount > K) {
                 if (A[left++] == 0) {
-                    zeroCount--;
+                    --zeroCount;
                 }
             }
-            ans = (right - left) > ans ? (right - left) : ans;
         }
         return ans;
     }
