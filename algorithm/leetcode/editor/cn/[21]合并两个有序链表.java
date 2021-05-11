@@ -24,22 +24,20 @@
  */
 class Solution {
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-        ListNode prehead = new ListNode(-1);
-        ListNode prev = prehead;
+        ListNode head = new ListNode(-1);
+        ListNode curr = head;
         while (l1 != null && l2 != null) {
-            if (l1.val < l2.val) {
-                prev.next = l1;
-                l1 = l1.next;
-            } else {
-                prev.next = l2;
+            if (l1.val > l2.val) {
+                curr.next = l2;
                 l2 = l2.next;
+            } else {
+                curr.next = l1;
+                l1 = l1.next;
             }
-            prev = prev.next;
+            curr = curr.next;
         }
-        // 合并后 l1 和 l2 最多只有一个还未被合并完，我们直接将链表末尾指向未合并完的链表即可
-        // 因为合并时取的是l1,l2的最小值，如果一个链表为null了说明最后取的一定是该链表，另一个链表的头节点一定比该链表大
-        prev.next = (l1 == null ? l2 : l1);
-        return prehead.next;
+        curr.next = l1 == null ? l2 : l1;
+        return head.next;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
