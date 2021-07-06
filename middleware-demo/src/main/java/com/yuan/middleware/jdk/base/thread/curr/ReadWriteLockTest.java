@@ -55,11 +55,14 @@ public class ReadWriteLockTest {
         //Runnable writeR = ()->write(lock, new Random().nextInt());
         Runnable writeR = () -> write(writeLock, new Random().nextInt());
 
-        for (int i = 0; i < 18; i++) {
+        for (int i = 0; i < 10; i++) {
             new Thread(readR).start();
         }
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             new Thread(writeR).start();
+        }
+        for (int i = 0; i < 10; i++) {
+            new Thread(readR).start();
         }
 
 
