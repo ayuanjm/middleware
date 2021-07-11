@@ -29,6 +29,7 @@
         <module>middleware-mysql</module>
         <module>middleware-tool</module>
         <module>spring</module>
+        <module>middleware-rocketmq</module>
     </modules>
     <dependencies>
         <dependency>
