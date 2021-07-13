@@ -1,8 +1,11 @@
 package com.yuan.middleware;
 
 import com.yuan.middleware.service.RedissonDistributedLocker;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -10,6 +13,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -17,7 +21,8 @@ import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class MiddlewareRedisApplicationTests {
+@Slf4j
+public class RedisTest {
     @Autowired
     private ApplicationContext ioc;
     @Autowired
@@ -27,7 +32,10 @@ public class MiddlewareRedisApplicationTests {
     private RedissonDistributedLocker locker;
 
     @Autowired
-    private ThreadPoolTaskScheduler task_event;
+    private ThreadPoolTaskScheduler taskScheduler;
+
+    @Resource
+    private RedissonClient redissonClient;
 
     @Test
     public void contextLoads() {
@@ -52,7 +60,7 @@ public class MiddlewareRedisApplicationTests {
                 new ThreadPoolExecutor.CallerRunsPolicy());
         try {
             for (int i = 0; i < 2; i++) {
-                task_event.execute(() -> async());
+                taskScheduler.execute(() -> async());
             }
         } finally {
             threadPoolExecutor.shutdown();
@@ -78,6 +86,45 @@ public class MiddlewareRedisApplicationTests {
                 locker.unlock("yuan");
                 System.out.println(Thread.currentThread().getName() + "释放锁");
             }
+        }
+    }
+
+    @Test
+    public void testTryLock() throws InterruptedException {
+        for (int i = 0; i < 2; ++i) {
+            taskScheduler.execute(this::lock);
+        }
+        TimeUnit.SECONDS.sleep(30);
+    }
+
+    private void tyrLock() {
+        RLock lock = redissonClient.getLock("2021");
+        if (lock.tryLock()) {
+            try {
+                log.info("获得到锁");
+                TimeUnit.SECONDS.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                lock.unlock();
+                log.info("释放锁");
+            }
+        } else {
+            log.info("获取锁失败");
+        }
+    }
+
+    private void lock() {
+        RLock lock = redissonClient.getLock("2021");
+        lock.lock();
+        try {
+            log.info("获得到锁");
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
+            log.info("释放锁");
         }
     }
 }
